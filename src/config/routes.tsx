@@ -7,9 +7,9 @@ import Home from "../pages/home";
 import Login from "../pages/login";
 import OrderReceipt from "../pages/orderrecipt";
 import Product from "../pages/product";
-import ResetPassword from "../pages/resetpassword";
-import SearchResult from "../pages/search";
+import ResetPassword from "../pages/resetpassword"; 
 import Signup from "../pages/signup";
+import SearchResult from "@/pages/search";
 
 const authRoutes = [
   { path: "/login", element: <Login /> },
@@ -23,7 +23,7 @@ const inAppRoutes = [
   { path: "/", element: <Home /> },
   { path: "/product/:id", element: <Product /> },
   { path: "/order/:orderId", element: <OrderReceipt /> },
-  { path: "/search", element: <SearchResult /> },
+  { path: "/s", element: <SearchResult /> },
   { path: "/about-us", element: <AboutUs /> },
   { path: "/contact-us", element: <ContactUs /> },
 ];

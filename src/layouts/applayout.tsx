@@ -6,7 +6,7 @@ const Applayout = () => {
  
   return (
     // <ProtectedRoute>
-    <div className={`flex flex-col `}>
+    <div className={`flex flex-col min-h-[100svh] `}>
       <Nav />
       <Outlet />
       <Footer />

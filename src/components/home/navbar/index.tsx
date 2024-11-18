@@ -146,7 +146,7 @@ export default function Nav() {
     const results = products.filter((product: ProductItemProps) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    return navigate(`/search?query=${searchTerm}`, { state: { results } });
+    return navigate(`/s?query=${searchTerm}`, { state: { results } });
   };
 
   return (
@@ -279,11 +279,7 @@ export default function Nav() {
                   src={user.profilePicture ? user?.profilePicture[0]?.url : ""}
                 />
                 <AvatarFallback>
-                  <span
-                    aria-label="avatar"
-                    className=" w-full h-full overflow-hidden rounded-full "
-                    role="img"
-                  >
+                  <span aria-label="avatar" className=" w-full h-full overflow-hidden rounded-full " role="img">
                     <img src={avatar} alt="" />
                   </span>
                 </AvatarFallback>
@@ -291,8 +287,7 @@ export default function Nav() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem className=" hover:text-white">
-                <p className="font-semibold">Signed in as </p>
-                <p className="font-semibold">{user?.email}</p>
+                <p className="font-semibold">Signed in as {user?.email} </p>
               </DropdownMenuItem>
               <DropdownMenuItem className=" hover:text-white">
                 {" "}
@@ -338,7 +333,7 @@ export default function Nav() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {categories &&
+                  {Array.isArray(categories) &&
                     categories?.map((item: CategoryProps) => (
                       <SelectItem key={item?.id} value={item?.name}>
                         {item?.name}

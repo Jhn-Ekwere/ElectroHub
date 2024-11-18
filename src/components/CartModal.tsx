@@ -32,7 +32,7 @@ export default function CartModal({ isCartOpen, handleCart, cartItems }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="  bg-white/80 h-full md:w-[400px] w-[75%] absolute shadow-xl flex flex-col right-0 top-0 transition-transform translate-x-0 duration-[800s] delay-300 ease-in-out "
+        className="  bg-white/80 h-full md:w-[400px] w-[75%] absolute shadow-xl flex flex-col right-0 top-0 transition-transform translate-x-0 duration-300 delay-300 ease-in-out "
       >
         <div className=" w-full flex-grow overflow-y-auto scrollbar-hide  ">
           <div className="flex  top-0  relative items-center justify-between text-primary p-5 border-b shadow-md border-primary">

@@ -121,21 +121,21 @@ export default function Product() {
     <div className=" text-default-600 gap-[1.6875rem] ">
       <div className="flex md:flex-row flex-col ">
         <div className="md:w-1/2  p-8 md:pl-[15%] h-full flex  flex-col-reverse gap-4 ">
-          <div className="md:w-[15%]  flex   flex-row gap-4 rounded ">
+          <div className="md:w-[15%]  flex  rou  flex-row gap-4 rounded ">
             {product?.images.slice(0, 6).map((img: { url: string }) => (
               <img
                 key={img.url}
                 src={img.url}
                 alt=""
-                className=" md:w-full w-[20%] object-contain cursor-pointer shadow aspect-square"
+                className=" md:w-full w-[20%] object-contain cursor-pointer shadow aspect-square rounded"
                 onClick={() => {
                   setDisplayImage(img.url);
                 }}
               />
             ))}
           </div>
-          <div className=" shadow-md rounded border h-fit overflow-hidden">
-            <img src={displayImage} alt="" className=" w-full object-contain aspect-square" />
+          <div className=" shadow-md rounded border max-w-[500px] h-fit overflow-hidden">
+            <img src={displayImage} alt="" className=" w-full object-contain rounded aspect-square" />
           </div>
         </div>
 
@@ -201,7 +201,7 @@ export default function Product() {
             />
           </div>
 
-          <div className="  items-center justify-between gap-6">
+          <div className=" flex items-center justify-between gap-6">
             <Button
               size="md"
               radius="none"
@@ -210,6 +210,15 @@ export default function Product() {
               startContent={<BiCart size={18} />}
             >
               Add to cart
+            </Button>
+            <Button
+              size="md"
+              radius="none"
+              className="text-white rounded w-full mt-2  bg-accent "
+              onClick={() => handlePress(product)}
+              startContent={<BiCart size={18} />}
+            >
+              Buy now
             </Button>
           </div>
           <div className="">

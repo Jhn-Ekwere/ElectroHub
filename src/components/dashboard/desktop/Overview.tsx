@@ -50,7 +50,7 @@ function Overview() {
   };
 
   return (
-    <div className="flex flex-col-reverse md:flex-row h-screen">
+    <div className="flex flex-col-reverse md:flex-row h-[100svh]">
       <aside className="md:w-64 shadow flex md:flex-col flex-row  border-r text-default-800 md:p-5 p-1">
         <Link to="/" className=" md:block hidden ">
           <div className="flex mb-20 mt-10 space-x-2 items-center ">

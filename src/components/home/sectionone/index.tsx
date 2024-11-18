@@ -1,4 +1,4 @@
- import React from "react";
+import React from "react";
 import maultimeter from "../../../assets/image/Zoyi ZT-109 Small Handheld Tester Autoranging Digital Multimeter.png";
 import powerSupply from "../../../assets/image/DC Power Supply Variable, 120V 3A Bench Power Supply.png";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ export default function SectionOne({ data }) {
               className=" px-2 py-1 border-primary text-primary rounded-none border "
               variant="bordered"
               onClick={() => {
-                navigate(`/search?query=`, { state: { results: data } });
+                navigate(`/s?query=`, { state: { results: data } });
               }}
             >
               Shop Now
@@ -44,7 +44,7 @@ export default function SectionOne({ data }) {
               className=" px-2 py-1 border-primary text-primary rounded-none border "
               variant="bordered"
               onClick={() => {
-                navigate(`/search?query=`, { state: { results: data } });
+                navigate(`/s?query=`, { state: { results: data } });
               }}
             >
               Shop Now

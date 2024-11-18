@@ -41,10 +41,10 @@ export default function SearchResult() {
   };
 
   return (
-    <div className="">
-      <div className="flex md:flex-row flex-col  w-full ">
+    <div className=" flex flex-col flex-grow ">
+      <div className="flex md:flex-row flex-grow flex-col  w-full ">
         {/* Filter Options */}
-        <div className="md:w-1/8   md:p-6 p-2 px-4 md:text-medium text-[9px] md:justify-start justify-center  border-b pb-4 md:mb-4 bg-gray-200 shadow flex flex-row md:flex-col gap-2 border-r border-gray-300">
+        <div className="md:w-1/8  md:p-6 p-2 px-4 md:text-medium text-[9px] md:justify-start justify-center  border-b pb-4 bg-gray-200 shadow flex flex-row md:flex-col gap-2 border-r border-gray-300">
           {/* <h3 className="md:text-xl text-[11px] font-semibold ">Filter </h3> */}
           {/* Add your filter options here */}
           <div className="md:flex-none flex-1">

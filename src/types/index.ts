@@ -36,7 +36,7 @@ export interface ProductItemProps {
         public_id: string;
         url: string;
     }[];
-    instock: boolean;
+    inStock: boolean;
     isProductNew: boolean;
     likes: [];
     manufacturer: string;
@@ -52,7 +52,21 @@ export interface ProductItemProps {
     cartQuantity: number;
 }
 
-
+// CreateProduct component
+export interface CreateProductProps {
+    name: string;
+    price: number;
+    discount: number;
+    description: string;
+    quantity: number;
+    category: string;
+    subCategory: string;
+    isFeatured: boolean;
+    manufacturer?: string;
+    inStock: boolean;
+    isProductNew: boolean;
+    images: string[];
+}
 
 export interface CartProps {
     cartItems: ProductItemProps[];
@@ -61,6 +75,14 @@ export interface CartProps {
 }
 
 export interface CategoryProps {
+    _id: string;
+    name: string;
+    description: string;
+    createdAt: string;
+    __v: number;
+    id: string;
+}
+export interface SubCategoryProps {
     _id: string;
     name: string;
     description: string;

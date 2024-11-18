@@ -32,6 +32,9 @@ export const updateUserEP = (data: any, id: string) => formDataApi.put(`/auth/${
 
 //  fetch all data
 export const fetchMatricsEP = () => api.get("/matrics").then((res) => res?.data);
+export const fetchOrdersPerDayEP = () => api.get("/matrics/orders-per-day").then((res) => res?.data);
+export const fetchUsersPerDayEP = () => api.get("/matrics/users-per-day").then((res) => res?.data);
+export const fetchProductsPerDayEP = () => api.get("/matrics/products-per-day").then((res) => res?.data);
 export const fetchOrdersEP = () => api.get("/orders").then((res) => res?.data);
 export const fetchUsersEP = () => api.get("/auth").then((res) => res?.data);
 export const fetchCategoriesEP = () => api.get("/category").then((res) => res?.data);
@@ -41,6 +44,8 @@ export const fetchCartsEP = (id:string) => api.get(`/carts/${id}`).then((res) =>
 export const fetchNotificationsEP = (id:string) => api.get(`/notifications/${id}`).then((res) => res?.data);
 export const fetchOrderEP = (id: string) => api.get(`/orders/${id}`).then((res) => res?.data);
 
+// delete product
+export const deleteProductEP = (id:string) => api.delete(`/products/delete/${id}`).then((res) => res?.data);
 
 
 export const toggleRoleEP = (id:string) => api.put(`/auth/${id}/toggle-role`).then((res) => res?.data);

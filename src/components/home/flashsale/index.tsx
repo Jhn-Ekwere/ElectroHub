@@ -70,7 +70,7 @@ export default function FlashSale({ products, userId }: FlashSaleProps) {
         <div className="gap-4 w-full flex pt-1   shadow ">
           {featuredProducts?.map((item) => {
             return (
-              <Card className="rounded-sm w-[15em] bg-white/90 border mb-1 shadow">
+              <Card key={item.name} className="rounded-sm w-[15em] bg-white/90 border mb-1 shadow">
                 <CardHeader className="overflow-visible p-0  border-b ">
                   <div className="absolute right-0 top-2  px-3 text-[9px] w-[40px] h-[17px] items-center   overflow-hidden ">
                     <div className=" absolute -right-[14px] -top-1 -rotate-[55deg] bg-red-500 h-[40px] w-[60px] "></div>
@@ -103,10 +103,7 @@ export default function FlashSale({ products, userId }: FlashSaleProps) {
                     <p className=" font-bold ">{formatCurrency(parseInt(item?.price.toString()))}</p>
                   </div>
                 </CardContent>
-                {/* <CardFooter className="flex justify-between">
-                    <Button variant="outline">Cancel</Button>
-                    <Button>Deploy</Button>
-                    </CardFooter> */}
+                 
               </Card>
             );
           })}
