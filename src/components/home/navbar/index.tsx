@@ -5,11 +5,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarContent,
-  NavbarItem,
-  Badge,
-  Popover,
-  // PopoverTrigger,
-  PopoverContent,
+  NavbarItem,  
 } from "@nextui-org/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import avatar from "../../../assets/image/avatar.svg";
@@ -26,8 +22,7 @@ import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
-  SelectLabel,
+  SelectItem, 
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -38,12 +33,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   AdjustmentsHorizontalIcon,
   Bars3Icon,
-  BellAlertIcon,
-  BellIcon,
-  MagnifyingGlassIcon,
-  MoonIcon,
-  ShoppingCartIcon,
-  SunIcon,
+  BellAlertIcon, 
+  MagnifyingGlassIcon, 
+  ShoppingCartIcon, 
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useLocation, useNavigate } from "react-router-dom";

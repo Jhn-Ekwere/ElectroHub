@@ -28,6 +28,8 @@ export const addCartEP = (data:any, userId:string) => api.post(`/auth/carts/${us
 
 export const updateUserEP = (data: any, id: string) => formDataApi.put(`/auth/${id}`, data).then((res) => res?.data);
 
+export const commentEP = (data: any, ) => api.post(`/reviews`, data).then((res) => res?.data);
+
 
 
 //  fetch all data
@@ -46,6 +48,7 @@ export const fetchOrderEP = (id: string) => api.get(`/orders/${id}`).then((res) 
 
 // delete product
 export const deleteProductEP = (id:string) => api.delete(`/products/delete/${id}`).then((res) => res?.data);
+export const DeleteCommentEP = (id:string) => api.delete(`/reviews/${id}`).then((res) => res?.data);
 
 
 export const toggleRoleEP = (id:string) => api.put(`/auth/${id}/toggle-role`).then((res) => res?.data);

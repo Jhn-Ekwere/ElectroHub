@@ -10,36 +10,18 @@ import { addToCart, deleteFromCart } from "../redux/cartSlice";
 import { toast } from "react-toastify";
 import delivery from "../assets/image/carbon_delivery.svg";
 import returnicon from "../assets/image/return.svg";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
-import { fetchProductsEP } from "../services";
-import { useQuery } from "@tanstack/react-query";
+import { commentEP, DeleteCommentEP, fetchProductsEP } from "../services";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getRecommendations } from "../utils/getRecomendation";
-import { Avatar } from "@nextui-org/react";
-import { CartProps, ProductItemProps } from "@/types";
+import { ProductItemProps } from "@/types";
+import {  Loader2, SendHorizontal, Star, Trash2 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import avatar from "../assets/image/avatar.svg";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Review } from "@/components/review";
 
-const reviews = [
-  {
-    id: 1,
-    username: "John Doe",
-    rating: 5,
-    comment: "Excellent product! Highly recommend.",
-    date: "2023-10-01",
-  },
-  {
-    id: 2,
-    username: "Jane Smith",
-    rating: 4,
-    comment: "Very good quality, but a bit expensive.",
-    date: "2023-09-25",
-  },
-  {
-    id: 3,
-    username: "Alice Johnson",
-    rating: 3,
-    comment: "Average product, nothing special.",
-    date: "2023-09-20",
-  },
-];
 const merchantProfile = {
   name: "John's Electronics",
   description: "We offer a wide range of electronic products including smartphones, laptops, and accessories.",
@@ -48,8 +30,10 @@ const merchantProfile = {
   rating: 4.5,
 };
 
+const schema = z.object({
+  comment: z.string().min(3),
+});
 export default function Product() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   let id = useParams().id;
   const navigate = useNavigate();
   const [displayImage, setDisplayImage] = useState<string | undefined>(undefined);
@@ -57,17 +41,57 @@ export default function Product() {
   const [categories, setCategories] = useState([]);
   const [activeTab, setActiveTab] = useState("Specifications");
   const user = useSelector((state: any) => state.auth);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
+  const [rating, setRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const queryClient = useQueryClient();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm<{ comment: string }>({
+    resolver: zodResolver(schema),
+  });
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: (data: { formData: any }) => commentEP(data.formData),
+    onSuccess: () => {
+      toast.success("Comment added successfully"); 
+      setRating(0);
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      reset();
+    },
+  });
+
+
+
+
+  const submitHandler = async (data: { comment: string }) => {
+    if (!user.id) {
+      toast.warn("Login a user");
+      return;
+    } 
+      const formData = {
+        comment: data.comment,
+        rating,
+        user: user.id,
+        product,
+      };
+      await mutateAsync({ formData });
+    
+  };
+
+  const handleStarClick = (selectedRating: number) => {
+    setRating(selectedRating === rating ? 0 : selectedRating);
+  };
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
-  const {
-    isPending,
-    error,
-    data: products,
-  } = useQuery({
+  const { data: products } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProductsEP,
   });
@@ -75,8 +99,7 @@ export default function Product() {
     products && products?.find((product: ProductItemProps) => product?.id.toString() === (id ?? "").toString());
   const cartItems = useSelector((state: any) => state.cartItems);
   const item =
-    cartItems &&
-    cartItems.cartItems.find((item: ProductItemProps) => item.id.toString() === item.toString());
+    cartItems && cartItems.cartItems.find((item: ProductItemProps) => item.id.toString() === item.toString());
 
   const handlePress = (data: ProductItemProps) => {
     if (data) {
@@ -114,8 +137,6 @@ export default function Product() {
     setDisplayImage(product?.images[0]?.url);
     saveSearchedItem();
   }, [product, categories]);
-
-  if (isPending) return <>Loading...</>;
 
   return (
     <div className=" text-default-600 gap-[1.6875rem] ">
@@ -276,33 +297,109 @@ export default function Product() {
 
           <div className="p-4 max-h-[25rem] text-sm  overflow-auto scrollbar-hide ">
             {activeTab === "Specifications" && <p className="text-gray-700">{product?.description}</p>}
-            {/* {activeTab === "Reviews" && (
+            {activeTab === "Reviews" && (
               <div className="">
-                {reviews.map((review) => (
-                  <Review
-                    key={review.id}
-                    username={review.username}
-                    rating={review.rating}
-                    comment={review.comment}
-                    date={review.date}
-                  />
-                ))}
+                <form
+                  onSubmit={handleSubmit(submitHandler)}
+                  className=" w-full px-4 py-2 mb-4  bg-gray-50 rounded-full  flex items-center gap-3 "
+                >
+                  <div className="w-full  flex items-center gap-3 flex-wrap">
+                    <div className="h-8 w-8 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Avatar>
+                        <AvatarImage
+                          className=" w-full h-full overflow-hidden rounded-full "
+                          src={user.profilePicture ? user?.profilePicture[0]?.url : ""}
+                        />
+                        <AvatarFallback>
+                          <span aria-label="avatar" className=" w-full h-full overflow-hidden rounded-full " role="img">
+                            <img src={avatar} alt="" />
+                          </span>
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+
+                    <input
+                      type="text" 
+                      {...register("comment")}
+                      placeholder="Add a comment..."
+                      className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-500"
+                    />
+                    <div className="flex items-center">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => handleStarClick(star)}
+                          onMouseEnter={() => setHoveredRating(star)}
+                          onMouseLeave={() => setHoveredRating(0)}
+                          className={`text-gray-400 hover:text-yellow-500 transition-colors ${
+                            (hoveredRating ? hoveredRating >= star : rating >= star) ? "text-yellow-500" : ""
+                          }`}
+                          aria-label={`Rate ${star} star${star !== 1 ? "s" : ""}`}
+                        >
+                          <Star
+                            className="h-5 w-5"
+                            fill={(hoveredRating ? hoveredRating >= star : rating >= star) ? "currentColor" : "none"}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {isPending ? (
+                    <Loader2 width="15" height="15" />
+                  ) : (
+                    <button
+                      type="submit"
+                      className="text-gray-500 hover:text-gray-700 transition-colors"
+                        aria-label="Submit comment"
+                        
+                    >
+                      <SendHorizontal className="h-5 w-5 cursor-pointer " />
+                      <span className="sr-only">Submit comment</span>
+                    </button>
+                  )}
+                </form>
+                {product.reviews.length > 0 ? (
+                  product.reviews.map(
+                    (review: {
+                      id: string;
+                      rating: number;
+                      comment: string;
+                      createdAt: string;
+                      user: { name: string; id: string };
+                    }) => (
+                      <Review
+                        key={ review.id }
+                        id={review.id}
+                        reviewer={review.user}
+                        rating={review.rating}
+                        comment={review.comment}
+                        createdAt={review.createdAt}
+                      />
+                    )
+                  )
+                ) : (
+                  <div className=" text-center text-slate-400 py-8 ">No Reviews</div>
+                )}
               </div>
-            )}  */}
+            )}
             {activeTab === "Marchant" && (
               <div className="border p-4 rounded-lg shadow-sm mb-4">
                 <div className="flex justify-between  border-b p-2 ">
                   <h2 className="md:text-2xl font-semibold mb-4">Merchant Profile</h2>
 
-                  <Avatar
-                    // isBordered
-                    as="button"
-                    className="transition-transform" 
-                    showFallback
-                    name={user?.name}
-                    size="sm"
-                    src={user?.profilePicture[0] ? user?.profilePicture[0]?.url : ""}
-                  />
+                  <Avatar>
+                    <AvatarImage
+                      className=" w-full h-full overflow-hidden rounded-full "
+                      src={user.profilePicture ? user?.profilePicture[0]?.url : ""}
+                    />
+                    <AvatarFallback>
+                      <span aria-label="avatar" className=" w-full h-full overflow-hidden rounded-full " role="img">
+                        <img src={avatar} alt="" />
+                      </span>
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
                 <div className=" py-4 text-xs md:text-sm  ">
                   <p className="">
@@ -325,11 +422,11 @@ export default function Product() {
             )}
           </div>
         </div>
-        {/* {recommendations.length > 0 && (
+        {recommendations.length > 0 && (
           <div className="bg-white p-4 md:w-1/3 max-h-[270px]  rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-2">Similar Items</h3>
             <div className="h-[85%] overflow-auto scrollbar-hide ">
-              {recommendations.map((item) => (
+              {recommendations.map((item: ProductItemProps) => (
                 <ul className="list-none text-sm " key={item.name}>
                   <li
                     className="flex items-center mb-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
@@ -345,30 +442,16 @@ export default function Product() {
                     <div>
                       <p className="text-gray-700">{item.name}</p>
                       <p className="text-gray-500">Line Mounts</p>
-                      <p className="text-gray-700 font-semibold">{formatCurrency(parseInt(item?.price))}</p>
+                      <p className="text-gray-700 font-semibold">{formatCurrency(parseInt(item?.price.toString()))}</p>
                     </div>
                   </li>
                 </ul>
               ))}
             </div>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
 }
 
-// const Review = ({ username, rating, comment, date }) => {
-//   return (
-//     <div className="border p-4 rounded-lg shadow-sm space-y-2 mb-2">
-//       <div className="flex items-center justify-between ">
-//         <h3 className="font-semibold">{username}</h3>
-//         <span className="text-yellow-500">
-//           {"★".repeat(rating)} <span className="text-gray-400">{"★".repeat(5 - rating)}</span>
-//         </span>
-//       </div>
-//       <p className="text-gray-600 ">{comment}</p>
-//       <p className="text-gray-400 ">{new Date(date).toLocaleDateString()}</p>
-//     </div>
-//   );
-// };

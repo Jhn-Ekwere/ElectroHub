@@ -119,7 +119,7 @@ export function DashboardTab() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-4 ">
-        {ordersPerDay.length > 0 && (
+        {ordersPerDay && ordersPerDay.length > 0 && (
           <div className="  bg-[#ffffff]  col-span-2 p-6 border rounded-lg shadow ">
             <h1 className="">Daily Sales</h1>
             <div className=" w-full h-[400px]">
@@ -148,8 +148,8 @@ export function DashboardTab() {
           </div>
         )}
 
-        {productsParDay.length > 0 && (
-          <div className="bg-[#ffffff] p-6 rounded-lg border shadow">
+        {productsParDay && productsParDay.length > 0 && (
+          <div className="bg-[#ffffff] p-6 rounded-lg border shadow col-span-2 md:col-span-1">
             <h1 className="">Top Products</h1>
             <div className=" w-full h-[400px]">
               <ResponsiveContainer width="100%" height={400}>
@@ -172,8 +172,8 @@ export function DashboardTab() {
             </div>
           </div>
         )}
-        {usersPerDay.length > 0 && (
-          <div className="bg-[#ffffff]  col-span-2 p-6 border rounded-lg shadow ">
+        {usersPerDay && usersPerDay.length > 0 && (
+          <div className="bg-[#ffffff]  col-span-2 md:col-span-3 p-6 border rounded-lg shadow ">
             <h1 className="">Daily User</h1>
             <div className=" w-full h-[400px]">
               <ResponsiveContainer>
