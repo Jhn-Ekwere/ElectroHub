@@ -49,10 +49,10 @@ export function EditProduct({ isOpen, setIsOpen, product }: EditProductProps) {
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
-      price: '',
-      discount: '',
+      price: "",
+      discount: "",
       description: "",
-      quantity: '',
+      quantity: "",
       category: "",
       subCategory: "",
       isFeatured: false,
@@ -226,7 +226,7 @@ export function EditProduct({ isOpen, setIsOpen, product }: EditProductProps) {
               onDragOver={handleDragOver}
               onClick={() => document.getElementById("images")?.click()}
             >
-              {product?.images && product.images.length > 0 ? (
+              {selectedImages.length === 0 && product?.images && product.images.length > 0 ? (
                 <div className="flex space-x-2 overflow-x-auto justify-center mt-2">
                   {product.images.map((image, index) => (
                     <img key={index} src={image.url} alt="preview" className="h-60 object-cover rounded-md" />

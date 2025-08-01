@@ -137,14 +137,14 @@ export default function SearchResult() {
                   </div>
                   <div className="text-sm text-left flex flex-col flex-1 justify-between p-2 ">
                     <div className="">
-                      <b
-                        className=" cursor-pointer "
+                      <p
+                        className=" cursor-pointer line-clamp-3 "
                         onClick={() => {
                           navigate(`/product/${item?.id}`);
                         }}
                       >
                         {item?.name}
-                      </b>
+                      </p>
                       <div className="flex items-center gap-2">
                         <StarIcon className={item?.star ? "size-4 fill-[gold] " : "size-4"} color="gold" />
                         <b>•</b>

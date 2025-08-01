@@ -22,7 +22,6 @@ export default function TopSale({ products, userId }: { products: ProductItemPro
   // filter product based in featured
   const featuredProducts = products.filter((item) => item?.isFeatured);
 
-
   const handleLike = (data: ProductItemProps) => {
     if (data) {
       dispatch(toggleProduct(data));
@@ -34,7 +33,7 @@ export default function TopSale({ products, userId }: { products: ProductItemPro
       toast.success(`${data?.name} has been added to your cart`);
     }
   };
- 
+
   return (
     <div className=" md:px-[10%] px-[5%] bg-primary/5 p-10 text-default-600">
       <h1 className="font-bold md:text-xl mb-4  ">Top selling items</h1>
@@ -52,23 +51,24 @@ export default function TopSale({ products, userId }: { products: ProductItemPro
                 className={`basis-${1 / featuredProducts.length} md:basis-1/4 lg:basis-1/5 p-2 mr-3 `}
               >
                 <div className="p-1">
-                  <Card className=" bg-white/90 border max-h-full relative flex flex-col mb-0 shadow rounded-sm w-[13em]">
+                  <Card className=" bg-white/90 border max-h-ful relative flex flex-col mb-0 shadow rounded-sm w-[13em]">
                     <CardHeader className="overflow-visible p-0 bg-white/80  border-b ">
                       <div className="absolute right-4 top-2 p-1 rounded-full  items-center  bg-white/80  ">
-                             { liked?.some((p: ProductItemProps) => p.id === item.id)
-                                                          ?
-                                                          <BsHeartFill
-                                                            className={
-                                                              "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
-                                                            }
-                                                            onClick={ () => handleLike(item) }
-                                                          /> :
-                                                          <BsHeart
-                                                            className={
-                                                               "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
-                                                            }
-                                                            onClick={ () => handleLike(item) }
-                                                          /> }
+                        {liked?.some((p: ProductItemProps) => p.id === item.id) ? (
+                          <BsHeartFill
+                            className={
+                              "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
+                            }
+                            onClick={() => handleLike(item)}
+                          />
+                        ) : (
+                          <BsHeart
+                            className={
+                              "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
+                            }
+                            onClick={() => handleLike(item)}
+                          />
+                        )}
                       </div>
                       <img
                         alt={item?.name}
@@ -80,23 +80,23 @@ export default function TopSale({ products, userId }: { products: ProductItemPro
                       />
                     </CardHeader>
                     <CardContent className="text-sm p-1 px-2 text-left flex flex-col gap-1 items-start ">
-                      <b
-                        className=" cursor-pointer "
+                      <p
+                        className=" cursor-pointer line-clamp-3 "
                         onClick={() => {
                           navigate(`/product/${item?.id}`);
                         }}
                       >
                         {item?.name}
-                      </b>
-                      <div className="flex items-center gap-2">
+                      </p>
+                      {/* <div className="flex items-center gap-2">
                         <StarIcon className={item?.star ? "size-4 fill-[gold] " : "size-4"} color="gold" />
                         <b>•</b>
                         <p className="text-default-300 text-xs">500+ sold</p>
-                      </div>
-                      <div className="flex gap-2 items-center">
+                      </div> */}
+                      {/* <div className="flex gap-2 items-center">
                         <p className="text-default-500 ">{formatCurrency(parseInt(item?.price.toString()))}</p>
                         <p className="text-danger text-xs line-through ">{item?.discount}</p>
-                      </div>
+                      </div> */}
                     </CardContent>
                     <CardFooter className="flex p-2 flex-grow items-end justify-center">
                       <Button

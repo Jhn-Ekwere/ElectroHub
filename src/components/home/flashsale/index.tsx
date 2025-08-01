@@ -59,7 +59,7 @@ export default function FlashSale({ products, userId }: FlashSaleProps) {
     <div className=" md:px-[10%] px-[5%] p-10 text-xs md:text-sm bg-primary/5 text-default-600  ">
       <div className="bg-red-500 text-white p-2">
         <div className="flex justify-between text-xs items-center ">
-          <h3 className="font-bold md:text-xl">Flash Sale</h3>
+          <h3 className="font-bold ">Flash Sale</h3>
           <p className="">Time Left: {formattedTime}</p>
           <a href="#" className="text-white underline">
             SEE ALL
@@ -67,46 +67,53 @@ export default function FlashSale({ products, userId }: FlashSaleProps) {
         </div>
       </div>
       <ScrollShadow className="w-full  " hideScrollBar offset={100} orientation="horizontal" size={20}>
-        <div className="gap-4 w-full flex pt-1   shadow ">
-          {featuredProducts?.map((item) => {
-            return (
-              <Card key={item.name} className="rounded-sm w-[15em] bg-white/90 border mb-1 shadow">
-                <CardHeader className="overflow-visible p-0  border-b ">
-                  <div className="absolute right-0 top-2  px-3 text-[9px] w-[40px] h-[17px] items-center   overflow-hidden ">
-                    <div className=" absolute -right-[14px] -top-1 -rotate-[55deg] bg-red-500 h-[40px] w-[60px] "></div>
-                    <p className="px-3 text-white absolute bg-transparent z-10 right-0  bottom-[50%] translate-y-[50%] ">
-                      -{item.discount}%
-                    </p>
-                  </div>
-                  <img
-                    alt={item?.name}
-                    className="w-full object-contain cursor-pointer "
-                    src={item?.images[0]?.url}
-                    onClick={() => {
-                      navigate(`/product/${item?.id}`);
-                    }}
-                  />
-                </CardHeader>
-                <CardContent className="text-left flex flex-col gap-1 p-2  items-start ">
-                  <p
-                    className=" cursor-pointer text-primary "
-                    onClick={() => {
-                      navigate(`/product/${item?.id}`);
-                    }}
+        <div className="gap-4 w-full flex pt-1  h-fit shadow ">
+          {featuredProducts
+            ?.sort(() => Math.random() - 3)
+            .slice(0, 10)
+            .map((item) => {
+              return (
+                <div className="p-1">
+                  <Card
+                    key={item.name}
+                    className="rounded-sm w-[8em] bg-transparent border-none mb-1 shadow-none max-h-full relative flex flex-col  "
                   >
-                    {item?.name}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <StarIcon className={item?.star ? "size-4 fill-[gold] " : "size-4"} color="gold" />
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <p className=" font-bold ">{formatCurrency(parseInt(item?.price.toString()))}</p>
-                  </div>
-                </CardContent>
-                 
-              </Card>
-            );
-          })}
+                    <CardHeader className="overflow-visible p-0  border-b ">
+                      <div className="absolute right-0 top-2  px-3 text-[9px] w-[40px] h-[17px] items-center   overflow-hidden ">
+                        <div className=" absolute -right-[14px] -top-1 -rotate-[55deg] bg-red-500 h-[40px] w-[60px] "></div>
+                        <p className="px-3 text-white absolute bg-transparent z-10 right-0  bottom-[50%] translate-y-[50%] ">
+                          -{item.discount}%
+                        </p>
+                      </div>
+                      <img
+                        alt={item?.name}
+                        className="w-full object-contain cursor-pointer "
+                        src={item?.images[0]?.url}
+                        onClick={() => {
+                          navigate(`/product/${item?.id}`);
+                        }}
+                      />
+                    </CardHeader>
+                    <CardContent className="text-left text-xs flex flex-col gap-1 p-2  items-start  px-2 ">
+                      <p
+                        className=" cursor-pointer text-primary line-clamp-3 "
+                        onClick={() => {
+                          navigate(`/product/${item?.id}`);
+                        }}
+                      >
+                        {item?.name}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <StarIcon className={item?.star ? "size-3 fill-[#ccaf09] " : "size-3"} color="gold" />
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <p className=" font-bold ">{formatCurrency(parseInt(item?.price.toString()))}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              );
+            })}
         </div>
       </ScrollShadow>
     </div>

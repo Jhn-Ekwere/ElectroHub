@@ -48,65 +48,58 @@ export default function NewArival({ products, userId }: { products: ProductItemP
           {newProducts?.map((item, index) => (
             <CarouselItem
               key={item.name}
-              className={`basis-${1 /newProducts.length} md:basis-1/4 lg:basis-1/6 p-2 mr-3 `}
+              className={`basis-${1 / newProducts.length} md:basis-1/4 lg:basis-32 p-2 mr-3.5 `}
             >
-              <Card
-                key={item.name}
-                className="rounded-sm md:text-medium relative text-xs p-0 w-[13em] md:w-[14em] flex flex-col h-full mb-0  "
-              >
-                <CardHeader className="overflow-hidden w-full h-[10em] p-0 border-b shadow bg-white/80 ">
-                  <div className="absolute right-4 top-2 p-1 rounded-full  items-center  bg-white/80  ">
-                            { liked?.some((p: ProductItemProps) => p.id === item.id)
-                                  ?
-                                  <BsHeartFill
-                                    className={
-                                      "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
-                                    }
-                                    onClick={ () => handleLike(item) }
-                                  /> :
-                                  <BsHeart
-                                    className={
-                                       "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
-                                    }
-                                    onClick={ () => handleLike(item) }
-                                  /> }
-                  </div>
-                  <img
-                    alt={item?.name}
-                    className="w-full object-contain h-full cursor-pointer "
-                    src={item?.images[0]?.url}
-                    onClick={() => {
-                      navigate(`/product/${item?.id}`);
-                    }}
-                  />
-                </CardHeader>
-                <CardContent className="  text-sm p-1 px-2 text-left flex-grow gap-1 items-start  ">
-                  <p
-                    className="xs text-center w-full cursor-pointer "
-                    onClick={() => {
-                      navigate(`/product/${item?.id}`);
-                    }}
-                  >
-                    {item?.name}
-                  </p>
-                </CardContent>
-                <CardFooter className="w-full mb-0 p-2 flex-grow">
-                  <div className="flex justify-between w-full gap-1 ">
-                    <div className=" text-left gap-2 items-center">
-                      <p className="text-default-500 text-sm font-bold ">
-                        {formatCurrency(parseInt(item?.price.toString()))}
-                      </p>
-                      <p className="text-danger text-xs ">{item?.discount}% off</p>
+              <div>
+                <Card
+                  key={item.name}
+                  className="rounded-sm md:text-medium relative text-xs p-0 w-[13em] md:w-[10em] flex flex-col h-full mb-0 bg-transparent border-none shadow-none  "
+                >
+                  <CardHeader className="overflow-visible p-0  border-b  ">
+                    <div className="absolute right-4 top-2 p-1 rounded-full  items-center  bg-white/80  ">
+                      {liked?.some((p: ProductItemProps) => p.id === item.id) ? (
+                        <BsHeartFill
+                          className={
+                            "hover:scale-110 ease-in-out size-3 fill-danger text-red-500 fill-red-500 cursor-pointer "
+                          }
+                          onClick={() => handleLike(item)}
+                        />
+                      ) : (
+                        <BsHeart
+                          className={
+                            "hover:scale-110 ease-in-out size-3 fill-danger text-red-500 fill-red-500 cursor-pointer "
+                          }
+                          onClick={() => handleLike(item)}
+                        />
+                      )}
                     </div>
-                    <Button
-                      className="text-white text-[10px]  border rounded px-4  hover:text-white "
-                      onClick={() => handlePress(item)}
+                    <img
+                      alt={item?.name}
+                      className="w-full object-contain  cursor-pointer "
+                      src={item?.images[0]?.url}
+                      onClick={() => {
+                        navigate(`/product/${item?.id}`);
+                      }}
+                    />
+                  </CardHeader>
+                  <CardContent className="  text-xs p-1 px-2 text-left flex-grow gap-1 items-start  ">
+                    <p
+                      className="xs text-center w-full cursor-pointer line-clamp-3  "
+                      onClick={() => {
+                        navigate(`/product/${item?.id}`);
+                      }}
                     >
-                      ORDER
-                    </Button>
-                  </div>
-                </CardFooter>
-              </Card>
+                      {item?.name}
+                    </p>
+                  </CardContent>
+                  <CardFooter className="w-full mb-0 p-2 flex-grow text-xs items-center ">
+                    <div className="flex  w-full gap-1 ">
+                      <p className="text-default-500  font-bold ">{formatCurrency(parseInt(item?.price.toString()))}</p>
+                      {item?.discount && <p className="text-red-500 text-xs  ">{item?.discount}% </p>}
+                    </div>
+                  </CardFooter>
+                </Card>
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
