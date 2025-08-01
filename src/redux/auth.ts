@@ -39,7 +39,6 @@ const authSlice = createSlice({
       state.dateOfBirth = payload.dateOfBirth;
       state.wishlist = payload.wishlist;
       state.cart = payload.cart;
-      state.isEmailVerified = payload.isEmailVerified;
 
       storeBusinessAuthInfo(state);
     },
@@ -54,7 +53,7 @@ const authSlice = createSlice({
       state.firstName = null;
       state.lastName = null;
       state.phone = null;
-      state.isEmailVerified = null;
+      state.isEmailVerified = false;
       state.address = null;
       state.likes = null;
       state.dateOfBirth = null;
@@ -96,13 +95,17 @@ const authSlice = createSlice({
       state.firstName = null;
       state.lastName = null;
       state.phone = null;
-      state.isEmailVerified = null;
+      state.isEmailVerified = false;
       state.address = null;
       state.likes = null;
       state.dateOfBirth = null;
       state.wishlist = null;
       state.cart = null;
       state.isEmailVerified = false;
+    },
+    updateprofilePicture: (state, action) => {
+      let payload = action.payload;
+      state.profilePicture = payload.profilePicture;
     },
 
     logout: (state) => {
@@ -115,7 +118,7 @@ const authSlice = createSlice({
       state.firstName = null;
       state.lastName = null;
       state.phone = null;
-      state.isEmailVerified = null;
+      state.isEmailVerified = false;
       state.address = null;
       state.likes = null;
       state.dateOfBirth = null;

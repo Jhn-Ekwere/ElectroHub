@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@nextui-org/button";
-import { BiCart } from "react-icons/bi";
+import { BiCart,  } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { HeartIcon, MinusIcon, PlusIcon, ShareIcon } from "@heroicons/react/24/outline";
+import {  MinusIcon, PlusIcon, ShareIcon } from "@heroicons/react/24/outline";
 import { ImStarEmpty, ImStarFull, ImStarHalf } from "react-icons/im";
 import { formatCurrency } from "../utils/formatter";
 import { addToCart, deleteFromCart } from "../redux/cartSlice";
@@ -14,13 +14,15 @@ import { commentEP, DeleteCommentEP, fetchProductsEP } from "../services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getRecommendations } from "../utils/getRecomendation";
 import { ProductItemProps } from "@/types";
-import {  Loader2, SendHorizontal, Star, Trash2 } from "lucide-react";
+import { Loader2, SendHorizontal, Star, Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import avatar from "../assets/image/avatar.svg";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Review } from "@/components/review";
+import { toggleProduct } from "@/redux/savedSlice";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 const merchantProfile = {
   name: "John's Electronics",
@@ -41,16 +43,17 @@ export default function Product() {
   const [categories, setCategories] = useState([]);
   const [activeTab, setActiveTab] = useState("Specifications");
   const user = useSelector((state: any) => state.auth);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const queryClient = useQueryClient();
+  const liked = useSelector((state: any) => state.saved)?.likedProducts;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm<{ comment: string }>({
     resolver: zodResolver(schema),
   });
@@ -58,29 +61,25 @@ export default function Product() {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (data: { formData: any }) => commentEP(data.formData),
     onSuccess: () => {
-      toast.success("Comment added successfully"); 
+      toast.success("Comment added successfully");
       setRating(0);
       queryClient.invalidateQueries({ queryKey: ["products"] });
       reset();
     },
   });
 
-
-
-
   const submitHandler = async (data: { comment: string }) => {
     if (!user.id) {
       toast.warn("Login a user");
       return;
-    } 
-      const formData = {
-        comment: data.comment,
-        rating,
-        user: user.id,
-        product,
-      };
-      await mutateAsync({ formData });
-    
+    }
+    const formData = {
+      comment: data.comment,
+      rating,
+      user: user.id,
+      product,
+    };
+    await mutateAsync({ formData });
   };
 
   const handleStarClick = (selectedRating: number) => {
@@ -108,6 +107,11 @@ export default function Product() {
     }
   };
 
+  const handleLike = (data: ProductItemProps) => {
+    if (data) {
+      dispatch(toggleProduct(data));
+    }
+  };
   const handleAdd = (data: ProductItemProps) => {
     if (data) {
       dispatch(addToCart(data));
@@ -213,13 +217,21 @@ export default function Product() {
                 </button>
               </div>
             </div>
-            <HeartIcon
-              className={
-                product?.liked
-                  ? "hover:scale-110 ease-in-out size-6 fill-danger text-red-500 cursor-pointer "
-                  : "text-red-500 cursor-pointer hover:scale-110 ease-in-out size-6"
-              }
-            />
+      
+            { liked?.some((p: ProductItemProps) => p?.id === product?.id)
+              ?
+              <BsHeartFill
+                className={
+                  "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
+                }
+                onClick={ () => handleLike(product) }
+              /> :
+              <BsHeart
+                className={
+                   "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
+                }
+                onClick={ () => handleLike(product) }
+              /> }
           </div>
 
           <div className=" flex items-center justify-between gap-6">
@@ -236,7 +248,18 @@ export default function Product() {
               size="md"
               radius="none"
               className="text-white rounded w-full mt-2  bg-accent "
-              onClick={() => handlePress(product)}
+              onClick={() =>{     if (!user?.id) {
+                toast.error("Please login to continue");
+                navigate("/auth/login");
+              } else  {
+                navigate("/checkout",
+                {
+                  state: {
+                    product: product,
+                  },
+                }
+                );
+              }}}
               startContent={<BiCart size={18} />}
             >
               Buy now
@@ -319,7 +342,7 @@ export default function Product() {
                     </div>
 
                     <input
-                      type="text" 
+                      type="text"
                       {...register("comment")}
                       placeholder="Add a comment..."
                       className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-500"
@@ -352,8 +375,7 @@ export default function Product() {
                     <button
                       type="submit"
                       className="text-gray-500 hover:text-gray-700 transition-colors"
-                        aria-label="Submit comment"
-                        
+                      aria-label="Submit comment"
                     >
                       <SendHorizontal className="h-5 w-5 cursor-pointer " />
                       <span className="sr-only">Submit comment</span>
@@ -370,7 +392,7 @@ export default function Product() {
                       user: { name: string; id: string };
                     }) => (
                       <Review
-                        key={ review.id }
+                        key={review.id}
                         id={review.id}
                         reviewer={review.user}
                         rating={review.rating}
@@ -454,4 +476,3 @@ export default function Product() {
     </div>
   );
 }
-

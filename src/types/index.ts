@@ -46,7 +46,7 @@ export interface ProductItemProps {
     quantity: number;
     reviews: [];
     star: number;
-    subcategory: [];
+    subcategory?: [];
     updatedAt: string;
     v: number;
     cartQuantity: number;
@@ -54,13 +54,15 @@ export interface ProductItemProps {
 
 // CreateProduct component
 export interface CreateProductProps {
+    id?: string;
+    _id?: string;
     name: string;
-    price: number;
-    discount: number;
+    price: string;
+    discount: string;
     description: string;
-    quantity: number;
+    quantity: string;
     category: string;
-    subCategory: string;
+    subCategory?: string | undefined;
     isFeatured: boolean;
     manufacturer?: string;
     inStock: boolean;

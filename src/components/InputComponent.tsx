@@ -1,4 +1,13 @@
-export function InputComponent({ name, type, onChange, defaultValue, }) {
+import { ChangeEvent } from 'react';
+
+interface InputComponentProps {
+  name: string;
+  type: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  defaultValue?: string;
+}
+
+export function InputComponent({ name, type, onChange, defaultValue }: InputComponentProps) {
   return (
     <div className=" w-full ">
       <label className="block text-gray-700 capitalize text-sm font-bold mb-1" htmlFor="name">

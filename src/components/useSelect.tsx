@@ -13,8 +13,8 @@ interface CustomInputProps {
   labelstyle?: string;
   classStyle?: string;
   setValue?: any;
-  option: { value: string; label: string }[];
-  defaultValue?: string;
+  option: { value: string | boolean; label: string }[];
+  defaultValue?: string | boolean;
 }
 
 export default function CustomSelect({
@@ -30,7 +30,7 @@ export default function CustomSelect({
   option,
   setValue,
   defaultValue,
-}: CustomInputProps) {
+}: CustomInputProps) { 
   return (
     <div className=" space-y-1">
       {label && <label className={`${labelstyle} text-sm `}>{label}</label>}
@@ -54,7 +54,7 @@ export default function CustomSelect({
           <SelectContent>
             {option &&
               option.map((item, index) => (
-                <SelectItem key={index} value={item.value}>
+                <SelectItem key={index} value={String(item.value)}>
                   {item.label}
                 </SelectItem>
               ))}

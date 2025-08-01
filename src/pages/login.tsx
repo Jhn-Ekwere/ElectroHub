@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useMutation } from "@tanstack/react-query";
 import CustomInput from "../components/useinput";
-import { loginEP } from "../services"; 
+import { loginEP } from "../services";
 import { SignInParamsProps } from "@/types";
 
 const schema = z.object({
@@ -20,7 +20,7 @@ const schema = z.object({
   password: z.string().min(5, { message: "Password must conatain at least 5 Characters" }),
 });
 
-function Login() { 
+function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -35,7 +35,12 @@ function Login() {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: loginEP,
     onSuccess: (data) => {
-      dispatch(loginSuccess(data));
+      if (data?.status !== 200) {
+        toast.error("Invalid Credentials");
+        return;
+      }
+
+      dispatch(loginSuccess(data.data));
       navigate("/");
     },
     onError: (error) => {

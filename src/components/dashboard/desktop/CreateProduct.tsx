@@ -2,10 +2,10 @@ import React, { useState, useCallback, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Button } from "@nextui-org/button";
 import { createProductsEP, fetchCategoriesEP, fetchSubCategoriesEP } from "../../../services";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CategoryProps, CreateProductProps, ProductItemProps, SubCategoryProps } from "@/types";
 import CustomInput from "@/components/useinput";
-import { z } from "zod";
+import { optional, z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomSelect from "@/components/useSelect";
@@ -14,13 +14,13 @@ import CustomTextarea from "@/components/usetextarea";
 const schema = z.object({
   name: z.string().min(3, { message: "Name must be at least 3 characters" }),
   price: z.string().min(1, { message: "Price must be at least 1 characters" }),
-  discount: z.string(),
-  description: z.string().min(3, { message: "Name must be at least 3 characters" }),
+  discount: z.string().optional(),
+  description: z.string().optional(),
   quantity: z.string(),
   category: z.string().min(1, { message: "Select one category" }),
-  subCategory: z.string(),
+  subCategory: z.string().optional(),
   isFeatured: z.string(),
-  isProductNew: z.string(),
+  isProductNew: z.string().optional(),
 });
 
 const featured = [
@@ -50,7 +50,9 @@ interface CreateProps {
 }
 
 export const CreateProduct = ({ setProductSubTab }: CreateProps) => {
-  const [selectedImages, setSelectedImages] = useState<string[]>([]); 
+  const queryClient = useQueryClient();
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
   const {
     register,
     handleSubmit,
@@ -72,19 +74,24 @@ export const CreateProduct = ({ setProductSubTab }: CreateProps) => {
   });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const fileArray = Array.from(event.target.files).map((file) => URL.createObjectURL(file));
-      setSelectedImages((prevImages) => [...prevImages, ...fileArray]);
-    }
+    const files = event.target.files ? Array.from(event.target.files) : [];
+    const imageFiles = files.filter((file) =>
+      ["image/png", "image/jpg", "image/jpeg", "image/webp"].includes(file.type)
+    );
+    setSelectedImages((prev) => [...prev, ...imageFiles.map((file) => URL.createObjectURL(file))]);
+    setImages((prev) => [...prev, ...imageFiles]);
   };
 
   const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    if (event.dataTransfer.files) {
-      const fileArray = Array.from(event.dataTransfer.files).map((file) => URL.createObjectURL(file));
-      setSelectedImages((prevImages) => [...prevImages, ...fileArray]);
-    }
+    const droppedFiles = Array.from(event.dataTransfer.files);
+    const imageFiles = droppedFiles.filter((file) =>
+      ["image/png", "image/jpg", "image/jpeg", "image/webp"].includes(file.type)
+    );
+    const imageUrls = imageFiles.map((file) => URL.createObjectURL(file));
+    setSelectedImages((prevImages) => [...prevImages, ...imageUrls]);
+    setImages((prev) => [...prev, ...imageFiles]);
   }, []);
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -98,6 +105,7 @@ export const CreateProduct = ({ setProductSubTab }: CreateProps) => {
       toast.success("Product created successfully");
       setProductSubTab("View Products");
       setSelectedImages([]);
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
     onError: (error) => {
       console.log(error);
@@ -108,24 +116,28 @@ export const CreateProduct = ({ setProductSubTab }: CreateProps) => {
   const submitHandler = async (data: any) => {
     const formData = new FormData();
     const fields = ["name", "price", "discount", "description", "quantity", "category", "subCategory"];
-    const isFeatured = Boolean(data.isFeatured)
+    const isFeatured = Boolean(data.isFeatured);
 
-    fields.forEach((field) => formData.append(field, data[field])); 
+    fields.forEach((field) => formData.append(field, data[field]));
     //@ts-ignore
-formData.append("isFeatured", isFeatured);
+    formData.append("isFeatured", isFeatured);
 
-    const files = (document.getElementById("images") as HTMLInputElement)?.files;
+    const files = images.length > 0 ? images : (document.getElementById("images") as HTMLInputElement)?.files;
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        formData.append("images", files[i]);
+        // check for file type and allow png, jpg, jpeg, webp
+        if (["image/png", "image/jpg", "image/jpeg", "image/webp"].includes(files[i].type)) {
+          formData.append("images", files[i]);
+        }
       }
     }
-    try { 
+
+    try {
       await mutateAsync(formData);
     } catch (error) {
       console.error(error);
     }
-  }; 
+  };
 
   return (
     <div className="max-w-lg mx-auto border p-4 bg-white/80 shadow-md rounded-lg">
@@ -136,7 +148,15 @@ formData.append("isFeatured", isFeatured);
           onDragOver={handleDragOver}
           onClick={() => document.getElementById("images")?.click()}
         >
-          <input type="file" id="images" name="images" multiple className="hidden" onChange={handleImageChange} />
+          <input
+            type="file"
+            id="images"
+            name="images"
+            multiple
+            className="hidden"
+            onChange={handleImageChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp"
+          />
           <span className=" text-default-400"> Click to select or drop images here.</span>
           <div className="flex space-x-2 overflow-x-auto justify-center mt-2">
             {selectedImages.map((image, index) => (
@@ -179,7 +199,7 @@ formData.append("isFeatured", isFeatured);
           register={register}
         />
 
-        <CustomTextarea 
+        <CustomTextarea
           variant="bordered"
           label="Description"
           name="description"

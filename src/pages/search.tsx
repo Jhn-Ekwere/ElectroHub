@@ -1,12 +1,39 @@
 import { AdjustmentsHorizontalIcon, HeartIcon, ShoppingCartIcon, StarIcon } from "@heroicons/react/24/outline";
-import { Button, Card, CardBody, CardFooter, Select, SelectItem, Slider } from "@nextui-org/react";
-import React, { useState } from "react";
+import { Button } from "@nextui-org/react";
+import { Slider } from "@/components/ui/slider";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { formatCurrency } from "../utils/formatter";
 import { addToCart } from "../redux/cartSlice";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCategoriesEP } from "../services";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CategoryProps, Product } from "@/types";
+import { toast } from "react-toastify";
+
+const Rating = [
+  {
+    id: 1,
+    name: "All Ratings",
+  },
+  {
+    id: 2,
+    name: "4 stars & up",
+  },
+  {
+    id: 3,
+    name: "3 stars & up",
+  },
+  {
+    id: 4,
+    name: "2 stars & up",
+  },
+  {
+    id: 5,
+    name: "1 star & up",
+  },
+];
 
 export default function SearchResult() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +50,7 @@ export default function SearchResult() {
   // Get the items for the current page
   const currentItems = searchResults.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
@@ -31,7 +58,7 @@ export default function SearchResult() {
     queryKey: ["category"],
     queryFn: fetchCategoriesEP,
   });
-  const handlePress = (data) => {
+  const handlePress = (data: Product) => {
     if (data) {
       dispatch(addToCart(data));
       toast.success(`${data.name} has been added to your cart`, {
@@ -44,64 +71,57 @@ export default function SearchResult() {
     <div className=" flex flex-col flex-grow ">
       <div className="flex md:flex-row flex-grow flex-col  w-full ">
         {/* Filter Options */}
-        <div className="md:w-1/8  md:p-6 p-2 px-4 md:text-medium text-[9px] md:justify-start justify-center  border-b pb-4 bg-gray-200 shadow flex flex-row md:flex-col gap-2 border-r border-gray-300">
-          {/* <h3 className="md:text-xl text-[11px] font-semibold ">Filter </h3> */}
+        <div className="md:w-1/8  md:p-6 p-2 px-4 md:text-medium text-[9px] md:justify-start justify-center  border-b pb-4 bg-gray-200 shadow flex flex-row md:flex-col gap-2 border-r border-gray-300  pt-20 ">
+          <h3 className="md:text-xl text-[11px] font-semibold ">Filter </h3>
           {/* Add your filter options here */}
-          <div className="md:flex-none flex-1">
-            <Select
-              placeholder="Categories"
-              size="xs"
-              startContent={<AdjustmentsHorizontalIcon className="size-4" />}
-              className="w-[10em] bg-opacity-0 "
-              variant="underlined"
-              color="primary"
-            >
-              {Array.isArray(categories) &&
-                categories?.map((item) => (
-                  <SelectItem key={item?.id} value={item?.name}>
-                    {item?.name}
-                  </SelectItem>
-                ))}
+          <div className="border-r border-default-400 flex-center  w-full">
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a Categories" />
+              </SelectTrigger>
+              <SelectContent className="w-full">
+                <SelectGroup>
+                  {Array.isArray(categories) &&
+                    categories?.map((item: CategoryProps) => (
+                      <SelectItem key={item?.id} value={item?.name}>
+                        {item?.name}
+                      </SelectItem>
+                    ))}
+                </SelectGroup>
+              </SelectContent>
             </Select>
           </div>
           <div className="md:flex-none flex-1">
-            <Select
-              size="xs"
-              startContent={<StarIcon className="size-4" />}
-              className="w-[10em] bg-opacity-0 "
-              variant="underlined"
-              color="primary"
-              placeholder="Rating"
-            >
-              <SelectItem value="option1">All Ratings</SelectItem>
-              <SelectItem value="option1">4 stars & up</SelectItem>
-              <SelectItem value="option2">3 stars & up</SelectItem>
-              <SelectItem value="option3">2 stars & up</SelectItem>
-              <SelectItem value="option3">1 star & up</SelectItem>
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a Rating" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {Rating.map((item) => (
+                    <SelectItem key={item.id} value={item.name}>
+                      {item.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
             </Select>
           </div>
           <div className="md:flex-none flex-1">
-            <label className="block mb-2 text-xs font-medium">Price Range</label>
-            <Slider
-              min={0}
-              max={100}
-              size="md"
-              className=" w-full h-4 "
-              // onChange={handleChange}
-            />
+            <label className="block mb-2 text-sm font-medium">Price Range</label>
+            <Slider defaultValue={[33]} max={100} step={1} />
           </div>
         </div>
 
         {/* Search Results */}
-        <div className="md:w-7/8 flex-1  md:p-6 px-[5%] pt-4 md:pt-10 ">
+        <div className="md:w-7/8 flex-1  md:p-6 px-[5%] pt-4  md:py-20 md:pt-10 ">
           <div className="flex flex-wrap  gap-4 ">
             {currentItems.length > 0 ? (
-              currentItems.map((item) => (
-                <div shadow="sm" key={item.id} radius="none" className="md:w-[13em] w-[10em] flex flex-col border ">
+              currentItems.map((item: Product) => (
+                <div key={item.id} className="md:w-[13em] w-[10em] flex flex-col border ">
                   <div className="overflow-visible  bg-white/80 ">
                     <div className="absolute right-4 top-2 p-1 rounded-full  items-center  bg-white/80  ">
                       <HeartIcon
-                        size={20}
                         className={"text-danger size-5 cursor-pointer hover:scale-110"}
                         // onClick={() => handleLike(item)}
                       />
@@ -132,7 +152,7 @@ export default function SearchResult() {
                       </div>
                       <div className="flex gap-2 items-center">
                         <p className="text-default-500 ">{formatCurrency(parseInt(item?.price))}</p>
-                        <p className="text-danger text-xs line-through ">{formatCurrency(parseInt(item?.discount))}</p>
+                        <p className="text-danger text-xs line-through ">{formatCurrency(item?.discount)}</p>
                       </div>
                     </div>
                     <Button
@@ -153,19 +173,21 @@ export default function SearchResult() {
             )}
           </div>
           {/* Pagination */}
-          <div className="flex justify-center my-6 ">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                onClick={() => handlePageChange(index + 1)}
-                className={`mx-1 px-3 py-1 border rounded ${
-                  currentPage === index + 1 ? "bg-primary text-white" : "bg-white/80 text-primary border-primary"
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
+          {totalPages > 1 && (
+            <div className="flex justify-center my-6 ">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`mx-1 px-3 py-1 border rounded ${
+                    currentPage === index + 1 ? "bg-primary text-white" : "bg-white/80 text-primary border-primary"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

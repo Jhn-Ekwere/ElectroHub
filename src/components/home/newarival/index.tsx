@@ -1,5 +1,5 @@
 import { Badge, ScrollShadow } from "@nextui-org/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../redux/cartSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -9,11 +9,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { ProductItemProps } from "@/types";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { toggleProduct } from "@/redux/savedSlice";
 
 export default function NewArival({ products, userId }: { products: ProductItemProps[]; userId: string }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const liked = useSelector((state: any) => state.saved).likedProducts;
 
+  const handleLike = (data: ProductItemProps) => {
+    if (data) {
+      dispatch(toggleProduct(data));
+    }
+  };
   const handlePress = (data: any) => {
     if (data) {
       dispatch(addToCart(data));
@@ -34,22 +42,34 @@ export default function NewArival({ products, userId }: { products: ProductItemP
         opts={{
           align: "start",
         }}
-        className="w-full h-fit  "
+        className="w-full h-fit "
       >
         <CarouselContent>
           {newProducts?.map((item, index) => (
-            <CarouselItem key={item.name} className={`basis-${1 / newProducts.length} md:basis-1/4 lg:basis-1/6 `}>
+            <CarouselItem
+              key={item.name}
+              className={`basis-${1 /newProducts.length} md:basis-1/4 lg:basis-1/6 p-2 mr-3 `}
+            >
               <Card
                 key={item.name}
-                className="rounded-sm md:text-medium relative text-xs p-0 w-[13em] md:w-[14em] flex flex-col h-full mb-0"
+                className="rounded-sm md:text-medium relative text-xs p-0 w-[13em] md:w-[14em] flex flex-col h-full mb-0  "
               >
                 <CardHeader className="overflow-hidden w-full h-[10em] p-0 border-b shadow bg-white/80 ">
                   <div className="absolute right-4 top-2 p-1 rounded-full  items-center  bg-white/80  ">
-                    <HeartIcon
-                      width={20}
-                      height={20}
-                      className={" text-danger fill-danger size-5 cursor-pointer hover:scale-110 "}
-                    />
+                            { liked?.some((p: ProductItemProps) => p.id === item.id)
+                                  ?
+                                  <BsHeartFill
+                                    className={
+                                      "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
+                                    }
+                                    onClick={ () => handleLike(item) }
+                                  /> :
+                                  <BsHeart
+                                    className={
+                                       "hover:scale-110 ease-in-out size-5 fill-danger text-red-500 fill-red-500 cursor-pointer "
+                                    }
+                                    onClick={ () => handleLike(item) }
+                                  /> }
                   </div>
                   <img
                     alt={item?.name}
@@ -90,8 +110,12 @@ export default function NewArival({ products, userId }: { products: ProductItemP
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        {newProducts.length > 6 && (
+          <>
+            <CarouselPrevious />
+            <CarouselNext />
+          </>
+        )}
       </Carousel>
     </div>
   );

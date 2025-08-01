@@ -8,11 +8,22 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "./App";
 import { store } from "./redux/store";
-import { getBusinessAuthInfo, getCartInfo } from "./utils/local_storage";
+import { getBusinessAuthInfo, getCartInfo, getSavedInfo } from "./utils/local_storage";
 import { clearCart, storeCart } from "./redux/cartSlice";
+import { clearSavedProducts, storeSavedProducts } from "./redux/savedSlice";
 
 // Create a client
 const queryClient = new QueryClient();
+
+
+let savedInfo = getSavedInfo();
+
+
+if (savedInfo && typeof savedInfo === 'object' && Object.keys(savedInfo).length) {
+  store.dispatch(storeSavedProducts(savedInfo));
+} else {
+  store.dispatch(clearSavedProducts())
+}
 
 let catInfo = getCartInfo();
 if (catInfo) {

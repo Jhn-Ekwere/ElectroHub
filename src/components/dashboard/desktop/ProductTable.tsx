@@ -38,7 +38,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatToCustomDate } from "@/utils/formatter";
 import { ProductItemProps } from "@/types";
- 
+
 import {
   Pagination,
   PaginationContent,
@@ -48,11 +48,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
- 
+
 //  products data table function
 export const ProductTable = () => {
   const [filtersProducts, setFiltersProducts] = useState([]);
-  const [isOpen,  setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((state: any) => state.auth);
   const [selectedProduct, setSelectedProduct] = useState<ProductItemProps>();
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -76,7 +76,7 @@ export const ProductTable = () => {
   } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProductsEP,
-    staleTime: 5 * 1000,
+    staleTime: 60 * 60 * 1000,
   });
   if (isPending) return "Loading...";
 
@@ -134,7 +134,7 @@ export const ProductTable = () => {
   return (
     <div className="relative">
       <div className="flex  ">
-        <div className="flex items-center p-1 px-3 rounded border  text-default-600 placeholder-default-600/70 w-fit  ">
+        <div className="flex items-center p-1 px-3 rounded border  text-default-600 placeholder-default-600/70 w-fit mb-2 ">
           <input
             type="text"
             placeholder="Search..."
@@ -164,7 +164,7 @@ export const ProductTable = () => {
                       </TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Price</TableHead>
-                      <TableHead>Status</TableHead>
+                      <TableHead>Quantity</TableHead>
                       <TableHead>Rating</TableHead>
                       {/* <TableHead className="hidden md:table-cell">Total Sales</TableHead> */}
                       <TableHead className="hidden md:table-cell">Created at</TableHead>
@@ -186,16 +186,7 @@ export const ProductTable = () => {
                             </TableCell>
                             <TableCell className="font-medium">{product.name}</TableCell>
                             <TableCell>{formatCurrency(product.price)}</TableCell>
-                            <TableCell>
-                              <Badge variant="outline">
-                                {" "}
-                                {product.inStock ? (
-                                  <div className=" font-medium ">In stock</div>
-                                ) : (
-                                  <div className="font-medium ">Out of stock</div>
-                                )}
-                              </Badge>
-                            </TableCell>
+                            <TableCell>{product.quantity}</TableCell>
                             <TableCell className="hidden md:table-cell">{product.star}</TableCell>
                             {/* <TableCell className="hidden md:table-cell">25</TableCell> */}
                             <TableCell className="hidden md:table-cell">
@@ -243,14 +234,7 @@ export const ProductTable = () => {
                             <TableCell className="font-medium">{product.name}</TableCell>
                             <TableCell>{formatCurrency(product.price)}</TableCell>
                             <TableCell>
-                              <Badge variant="outline">
-                                {" "}
-                                {product.inStock ? (
-                                  <div className=" font-medium ">In stock</div>
-                                ) : (
-                                  <div className="font-medium ">Out of stock</div>
-                                )}
-                              </Badge>
+                              <Badge variant="outline">{product.quantity}</Badge>
                             </TableCell>
                             <TableCell className="hidden md:table-cell">{product.star}</TableCell>
                             {/* <TableCell className="hidden md:table-cell">25</TableCell> */}
@@ -274,8 +258,7 @@ export const ProductTable = () => {
                                     className="flex items-center gap-2"
                                   >
                                     <PencilIcon className="h-4 w-4" />
-                                      <span>Edit</span>
-                                       
+                                    <span>Edit</span>
                                   </DropdownMenuItem>
 
                                   <DropdownMenuItem
@@ -361,9 +344,8 @@ export const ProductTable = () => {
           <div className=" py-4 mx-auto w-full text-gray-500 text-center ">Empty Product.</div>
         )}
       </div>
- 
-        <EditProduct isOpen={isOpen} setIsOpen={setIsOpen} product={selectedProduct} />
-      
+
+      <EditProduct isOpen={isOpen} setIsOpen={setIsOpen} product={selectedProduct} />
     </div>
   );
 };

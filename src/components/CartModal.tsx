@@ -6,23 +6,48 @@ import { useNavigate } from "react-router-dom";
 import { addToCart, clearCart, deleteFromCart } from "../redux/cartSlice";
 import { toast } from "react-toastify";
 
-export default function CartModal({ isCartOpen, handleCart, cartItems }) {
+interface CartModalProps {
+  isCartOpen: boolean;
+  handleCart: () => void;
+  cartItems: {
+    cartItems: Array<{
+      id: string;
+      images: Array<{ url: string }>;
+      name: string;
+      price: string;
+      discount: number;
+      cartQuantity: number;
+    }>;
+    cartTotalAmount: string;
+  };
+}
+
+export default function CartModal({ isCartOpen, handleCart, cartItems }: CartModalProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth);
+  const user = useSelector((state:any) => state.auth);
 
-  const handleAdd = (data) => {
+  interface CartItem {
+    id: string;
+    images: Array<{ url: string }>;
+    name: string;
+    price: string;
+    discount: number;
+    cartQuantity: number;
+  }
+
+  const handleAdd = (data: CartItem) => {
     if (data) {
       dispatch(addToCart(data));
     }
   };
-  const handleremove = (data) => {
+  const handleremove = (data:String) => {
     if (data) {
       dispatch(deleteFromCart(data));
     }
   };
   const handleClear = () => {
-    dispatch(clearCart());
+    dispatch(clearCart({}));
   };
 
   return (
@@ -95,7 +120,7 @@ export default function CartModal({ isCartOpen, handleCart, cartItems }) {
               <ShoppingBagIcon className="size-4" />
               Checkout
             </Button>
-            <Button variant="fade" className=" w-full  font-semibold " onClick={handleClear}>
+            <Button   className=" w-full  font-semibold " onClick={handleClear}>
               Clear
             </Button>
           </div>

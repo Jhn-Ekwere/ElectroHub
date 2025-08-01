@@ -1,6 +1,6 @@
 import { LockClosedIcon, MinusIcon, PlusIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import logo from "../assets/image/logo.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { formatCurrency } from "../utils/formatter";
 import { Button } from "@nextui-org/button";
@@ -14,20 +14,70 @@ import { useMutation } from "@tanstack/react-query";
 import { createNotificationEP, createOrderEP } from "../services";
 import { toast } from "react-toastify";
 
+interface PaymentLogo {
+  name: string;
+  url: string;
+}
+
+interface CartItem {
+  _id: string;
+  cartQuantity: number;
+  images: { url: string }[];
+  name: string;
+  description: string;
+  price: string;
+}
+
+interface User {
+  id: string;
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  phone?: string;
+}
+
+interface State {
+  cart: {
+    cartItems: CartItem[];
+    cartTotalAmount: string;
+  };
+  auth: User;
+}
+interface PaymentMethodChangeEvent extends React.ChangeEvent<HTMLInputElement> {
+  target: HTMLInputElement & EventTarget;
+}
+interface OrderData {
+  orderId: string;
+  status: string;
+  id: string;
+}
+
 export default function Checkout() {
   const [deliverAddressDone, setDeliverAddressDone] = useState(false);
-  const [orderData, setOrderData] = useState({});
+
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [paymentDone, setPaymentDone] = useState(false);
-  const cartItems = useSelector((state) => state.cart);
-  const [data, setData] = useState({});
+  const cartItems = useSelector((state: any) => state.cart);
+  const [data, setData] = useState({
+    street: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
+    phone: "",
+  });
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth);
+  const user = useSelector((state: any) => state.auth);
   const [profileAddress, setProfileAddress] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [code, setCode] = useState("");
   const navigate = useNavigate();
-
+  const product = useLocation().state?.product;
   const handleApply = () => {
     // Handle applying the gift card or discount code here
     console.log("Gift card or discount code:", code);
@@ -52,16 +102,16 @@ export default function Checkout() {
     },
   ];
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setProfileAddress(event.target.checked);
   };
 
-  const handlePaymentMethodChange = (event) => {
+  const handlePaymentMethodChange = (event: PaymentMethodChangeEvent): void => {
     setPaymentMethod(event.target.value);
   };
 
   // Handle submitting the form here
-  const submitHandler = async (e) => {
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const cartData = [];
 
@@ -91,7 +141,7 @@ export default function Checkout() {
     }
   };
 
-  const sendNotification = async (data) => {
+  const sendNotification = async (data: any) => {
     setOrderData(data);
     const notificationData = {
       recipient: user?.id,
@@ -110,11 +160,11 @@ export default function Checkout() {
 
   const { mutateAsync: mutateNotification } = useMutation({
     mutationFn: createNotificationEP,
-    onSuccess: (data) => {
-      navigate(`/order/${orderData.orderId}`);
-          dispatch(clearCart());
-        
-
+    onSuccess: () => {
+      if (orderData) {
+        navigate(`/order/${orderData.orderId}`);
+      }
+      dispatch(clearCart({}));
     },
     onError: (error) => {
       console.log(error);
@@ -154,47 +204,51 @@ export default function Checkout() {
               {!deliverAddressDone ? (
                 <div className=" space-y-4">
                   <h1 className="text-lg uppercase font-bold mb-6">Delivery Address</h1>
-                  <div className="flex items-center space-x-2 ">
-                    {/* terms and condition checkbox */}
-                    <input type="checkbox" name="" id="" onChange={handleCheckboxChange} />
-                    <p className=" text-sm "> Use Home address in profile </p>
-                  </div>
+                  {user?.address && (
+                    <div className="flex items-center space-x-2 ">
+                      {/* terms and condition checkbox */}
+                      <input type="checkbox" name="" id="" onChange={handleCheckboxChange} />
+                      <p className=" text-sm "> Use Home address in profile </p>
+                    </div>
+                  )}
                   <InputComponent
                     name="street"
                     type="text"
-                    onChange={(e) => setData({ ...data, street: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, street: e.target.value })}
                     defaultValue={profileAddress ? user?.address?.street : null}
                   />
                   <InputComponent
                     name="city"
                     type="text"
-                    onChange={(e) => setData({ ...data, city: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, city: e.target.value })}
                     defaultValue={profileAddress ? user?.address?.city : null}
                   />
                   <div className="flex space-x-4 w-full">
                     <InputComponent
                       name="state"
                       type="text"
-                      onChange={(e) => setData({ ...data, state: e.target.value })}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, state: e.target.value })}
                       defaultValue={profileAddress ? user?.address?.state : null}
                     />
                     <InputComponent
                       name="postal code"
                       type="text"
-                      onChange={(e) => setData({ ...data, postalCode: e.target.value })}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setData({ ...data, postalCode: e.target.value })
+                      }
                       defaultValue={profileAddress ? user?.address?.postalCode : null}
                     />
                   </div>
                   <InputComponent
                     name="country"
                     type="text"
-                    onChange={(e) => setData({ ...data, country: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, country: e.target.value })}
                     defaultValue={profileAddress ? user?.address?.country : null}
                   />
                   <InputComponent
                     name="phone"
                     type="number"
-                    onChange={(e) => setData({ ...data, phone: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, phone: e.target.value })}
                     defaultValue={profileAddress ? user?.address?.phone : null}
                   />
 
@@ -301,9 +355,7 @@ export default function Checkout() {
                 onChange={handleToggle}
               />
               <div className="">
-                <div className="ml-2 text-sm font-semibold text-gray-900 ">
-                  Get SMS alerts about your orders
-                </div>
+                <div className="ml-2 text-sm font-semibold text-gray-900 ">Get SMS alerts about your orders</div>
                 <div className="ml-2 text-sm text-gray-500">
                   Stay up to date on your purchase with order confirmation and shipping confirmation messages
                 </div>
@@ -314,36 +366,61 @@ export default function Checkout() {
         <div className="bg-primary/5 p-10 md:h-screen space-y-5 md:pb-32 overflow-auto scrollbar-hide md:w-2/4 ">
           <h1 className=" font-bold text-center text-xl">Order Summary</h1>
           <div className=" md:max-w-sm  max-w-lg mx-auto border rounded bg-white/80 shadow-sm  ">
-            {cartItems?.cartItems?.map((item, index) => (
-              <div key={index} className="border-b  flex items-center gap-4 p-4 ">
-                 <div className="w-[60px] h-[50px] bg-white/80 rounded overflow-hidden border border-default-200 ">
-                    <img src={item?.images[0].url} alt="" className=" w-full h-full object-contain " />
-                  </div> <div className="md:flex flex-grow gap-4 ">
-                
-
+            {product ? (
+              <div className="border-b  flex items-center gap-4 p-4 ">
+                <div className="w-[60px] h-[50px] bg-white/80 rounded overflow-hidden border border-default-200 ">
+                  <img src={product?.images[0].url} alt="" className=" w-full h-full object-contain " />
+                </div>{" "}
+                <div className="md:flex flex-grow gap-4 ">
                   <div className=" flex-grow text-sm">
                     <div className="truncate font-semibold  text-ellipsis overflow-hidden w-[180px] text-default-500  ">
-                      {item?.name}
+                      {product?.name}
                     </div>
                     <div className="flex gap-2 items-center">
-                      <p className=" text-xs truncate w-[180px] text-ellipsis ">{item.description}</p>
+                      <p className=" text-xs truncate w-[180px] text-ellipsis ">{product.description}</p>
                     </div>
                     <div className="flex gap-2 items-center w-[180px]">
                       <p className=" text-xs truncate  text-ellipsis ">Quantity:</p>
-                      <p className=" text-xs truncate  text-ellipsis ">{item?.cartQuantity}</p>
+                      <p className=" text-xs truncate  text-ellipsis ">{product?.cartQuantity}</p>
                     </div>
                   </div>
                   <div className="flex items-center justify-between md:text-sm text-xs ">
-                  <p className=" font-bold ">{formatCurrency(parseInt(item.price))}</p>
+                    <p className=" font-bold ">{formatCurrency(parseInt(product.price))}</p>
+                  </div>
                 </div>
-                </div>
-               
               </div>
-            ))}
+            ) : (
+              cartItems?.cartItems?.map((item: CartItem) => (
+                <div key={item._id} className="border-b  flex items-center gap-4 p-4 ">
+                  <div className="w-[60px] h-[50px] bg-white/80 rounded overflow-hidden border border-default-200 ">
+                    <img src={item?.images[0].url} alt="" className=" w-full h-full object-contain " />
+                  </div>{" "}
+                  <div className="md:flex flex-grow gap-4 ">
+                    <div className=" flex-grow text-sm">
+                      <div className="truncate font-semibold  text-ellipsis overflow-hidden w-[180px] text-default-500  ">
+                        {item?.name}
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <p className=" text-xs truncate w-[180px] text-ellipsis ">{item.description}</p>
+                      </div>
+                      <div className="flex gap-2 items-center w-[180px]">
+                        <p className=" text-xs truncate  text-ellipsis ">Quantity:</p>
+                        <p className=" text-xs truncate  text-ellipsis ">{item?.cartQuantity}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between md:text-sm text-xs ">
+                      <p className=" font-bold ">{formatCurrency(parseInt(item.price))}</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
             <div className="  space-y-2 p-4  pt-10  shadow-lg ">
               <div className="text-xs flex items-center justify-between ">
                 <p className=" font-semibold ">Subtotal:</p>
-                <h1 className="">{formatCurrency(parseInt(cartItems?.cartTotalAmount))}</h1>
+                <h1 className="">
+                  {product ? formatCurrency(product.price) : formatCurrency(parseInt(cartItems?.cartTotalAmount))}
+                </h1>
               </div>
               <div className="text-xs flex items-center justify-between ">
                 <p className=" font-semibold ">Shipping:</p>
@@ -367,7 +444,9 @@ export default function Checkout() {
               </div>
               <div className=" flex items-center justify-between border-t ">
                 <p className=" font-bold">Total:</p>
-                <h1 className="font-bold text-xl ">{formatCurrency(parseInt(cartItems?.cartTotalAmount))}</h1>
+                <h1 className="font-bold text-xl ">
+                  {product ? formatCurrency(product.price) : formatCurrency(parseInt(cartItems?.cartTotalAmount))}
+                </h1>
               </div>
             </div>
           </div>

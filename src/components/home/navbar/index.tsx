@@ -5,7 +5,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarContent,
-  NavbarItem,  
+  NavbarItem,
 } from "@nextui-org/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import avatar from "../../../assets/image/avatar.svg";
@@ -18,14 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem, 
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import truck from "../../../assets/image/truck.png";
 import logo from "../../../assets/image/logo.svg";
@@ -33,9 +26,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   AdjustmentsHorizontalIcon,
   Bars3Icon,
-  BellAlertIcon, 
-  MagnifyingGlassIcon, 
-  ShoppingCartIcon, 
+  BellAlertIcon,
+  MagnifyingGlassIcon,
+  ShoppingCartIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -278,13 +271,18 @@ export default function Nav() {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem className=" hover:text-white">
-                <p className="font-semibold">Signed in as {user?.email} </p>
-              </DropdownMenuItem>
-              <DropdownMenuItem className=" hover:text-white">
-                {" "}
-                <Link to="my-account">My Account</Link>
-              </DropdownMenuItem>
+              {user.isAuthenticated && (
+                <>
+                  <DropdownMenuItem className=" hover:text-white">
+                    <p className="font-semibold">
+                      Signed in as <span className="text-xs font-light">{user?.email}</span>
+                    </p>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className=" hover:text-white">
+                    <Link to="my-account">My Account</Link>
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuItem className=" hover:text-white">Orders</DropdownMenuItem>
               <DropdownMenuItem className=" hover:text-white">Saved Items</DropdownMenuItem>
               {user.isAuthenticated ? (
