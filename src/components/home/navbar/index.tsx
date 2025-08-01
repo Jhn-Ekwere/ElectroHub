@@ -6,10 +6,6 @@ import {
   NavbarMenuItem,
   NavbarContent,
   NavbarItem,
-  Badge,
-  Popover,
-  // PopoverTrigger,
-  PopoverContent,
 } from "@nextui-org/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import avatar from "../../../assets/image/avatar.svg";
@@ -22,15 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import truck from "../../../assets/image/truck.png";
 import logo from "../../../assets/image/logo.svg";
@@ -39,11 +27,8 @@ import {
   AdjustmentsHorizontalIcon,
   Bars3Icon,
   BellAlertIcon,
-  BellIcon,
   MagnifyingGlassIcon,
-  MoonIcon,
   ShoppingCartIcon,
-  SunIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -146,7 +131,7 @@ export default function Nav() {
     const results = products.filter((product: ProductItemProps) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    return navigate(`/search?query=${searchTerm}`, { state: { results } });
+    return navigate(`/s?query=${searchTerm}`, { state: { results } });
   };
 
   return (
@@ -279,25 +264,25 @@ export default function Nav() {
                   src={user.profilePicture ? user?.profilePicture[0]?.url : ""}
                 />
                 <AvatarFallback>
-                  <span
-                    aria-label="avatar"
-                    className=" w-full h-full overflow-hidden rounded-full "
-                    role="img"
-                  >
+                  <span aria-label="avatar" className=" w-full h-full overflow-hidden rounded-full " role="img">
                     <img src={avatar} alt="" />
                   </span>
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem className=" hover:text-white">
-                <p className="font-semibold">Signed in as </p>
-                <p className="font-semibold">{user?.email}</p>
-              </DropdownMenuItem>
-              <DropdownMenuItem className=" hover:text-white">
-                {" "}
-                <Link to="my-account">My Account</Link>
-              </DropdownMenuItem>
+              {user.isAuthenticated && (
+                <>
+                  <DropdownMenuItem className=" hover:text-white">
+                    <p className="font-semibold">
+                      Signed in as <span className="text-xs font-light">{user?.email}</span>
+                    </p>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className=" hover:text-white">
+                    <Link to="my-account">My Account</Link>
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuItem className=" hover:text-white">Orders</DropdownMenuItem>
               <DropdownMenuItem className=" hover:text-white">Saved Items</DropdownMenuItem>
               {user.isAuthenticated ? (
@@ -338,7 +323,7 @@ export default function Nav() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {categories &&
+                  {Array.isArray(categories) &&
                     categories?.map((item: CategoryProps) => (
                       <SelectItem key={item?.id} value={item?.name}>
                         {item?.name}

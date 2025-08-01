@@ -36,7 +36,7 @@ export interface ProductItemProps {
         public_id: string;
         url: string;
     }[];
-    instock: boolean;
+    inStock: boolean;
     isProductNew: boolean;
     likes: [];
     manufacturer: string;
@@ -46,13 +46,29 @@ export interface ProductItemProps {
     quantity: number;
     reviews: [];
     star: number;
-    subcategory: [];
+    subcategory?: [];
     updatedAt: string;
     v: number;
     cartQuantity: number;
 }
 
-
+// CreateProduct component
+export interface CreateProductProps {
+    id?: string;
+    _id?: string;
+    name: string;
+    price: string;
+    discount: string;
+    description: string;
+    quantity: string;
+    category: string;
+    subCategory?: string | undefined;
+    isFeatured: boolean;
+    manufacturer?: string;
+    inStock: boolean;
+    isProductNew: boolean;
+    images: string[];
+}
 
 export interface CartProps {
     cartItems: ProductItemProps[];
@@ -61,6 +77,14 @@ export interface CartProps {
 }
 
 export interface CategoryProps {
+    _id: string;
+    name: string;
+    description: string;
+    createdAt: string;
+    __v: number;
+    id: string;
+}
+export interface SubCategoryProps {
     _id: string;
     name: string;
     description: string;

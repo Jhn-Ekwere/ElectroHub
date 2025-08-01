@@ -6,23 +6,48 @@ import { useNavigate } from "react-router-dom";
 import { addToCart, clearCart, deleteFromCart } from "../redux/cartSlice";
 import { toast } from "react-toastify";
 
-export default function CartModal({ isCartOpen, handleCart, cartItems }) {
+interface CartModalProps {
+  isCartOpen: boolean;
+  handleCart: () => void;
+  cartItems: {
+    cartItems: Array<{
+      id: string;
+      images: Array<{ url: string }>;
+      name: string;
+      price: string;
+      discount: number;
+      cartQuantity: number;
+    }>;
+    cartTotalAmount: string;
+  };
+}
+
+export default function CartModal({ isCartOpen, handleCart, cartItems }: CartModalProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth);
+  const user = useSelector((state:any) => state.auth);
 
-  const handleAdd = (data) => {
+  interface CartItem {
+    id: string;
+    images: Array<{ url: string }>;
+    name: string;
+    price: string;
+    discount: number;
+    cartQuantity: number;
+  }
+
+  const handleAdd = (data: CartItem) => {
     if (data) {
       dispatch(addToCart(data));
     }
   };
-  const handleremove = (data) => {
+  const handleremove = (data:String) => {
     if (data) {
       dispatch(deleteFromCart(data));
     }
   };
   const handleClear = () => {
-    dispatch(clearCart());
+    dispatch(clearCart({}));
   };
 
   return (
@@ -32,7 +57,7 @@ export default function CartModal({ isCartOpen, handleCart, cartItems }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="  bg-white/80 h-full md:w-[400px] w-[75%] absolute shadow-xl flex flex-col right-0 top-0 transition-transform translate-x-0 duration-[800s] delay-300 ease-in-out "
+        className="  bg-white/80 h-full md:w-[400px] w-[75%] absolute shadow-xl flex flex-col right-0 top-0 transition-transform translate-x-0 duration-300 delay-300 ease-in-out "
       >
         <div className=" w-full flex-grow overflow-y-auto scrollbar-hide  ">
           <div className="flex  top-0  relative items-center justify-between text-primary p-5 border-b shadow-md border-primary">
@@ -95,7 +120,7 @@ export default function CartModal({ isCartOpen, handleCart, cartItems }) {
               <ShoppingBagIcon className="size-4" />
               Checkout
             </Button>
-            <Button variant="fade" className=" w-full  font-semibold " onClick={handleClear}>
+            <Button   className=" w-full  font-semibold " onClick={handleClear}>
               Clear
             </Button>
           </div>

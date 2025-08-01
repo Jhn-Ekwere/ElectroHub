@@ -19,7 +19,7 @@ export default function Hero({ data }) {
           <Button
             className="bg-primary rounded text-white px-4 py-2 flex items-center gap-2 shadow-lg hover:bg-primary/90 ease-in-out duration-150 text-sm  "
             onClick={() => {
-              navigate(`/search?query=`, { state: { results: data } });
+              navigate(`/s?query=`, { state: { results: data } });
             }}
           >
             Shop now{" "}

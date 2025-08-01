@@ -50,12 +50,12 @@ function Overview() {
   };
 
   return (
-    <div className="flex flex-col-reverse md:flex-row h-screen">
+    <div className="flex flex-col-reverse md:flex-row h-[100svh]">
       <aside className="md:w-64 shadow flex md:flex-col flex-row  border-r text-default-800 md:p-5 p-1">
         <Link to="/" className=" md:block hidden ">
-          <div className="flex mb-20 mt-10 space-x-2 items-center ">
-            <img src={logo} alt="Logo" className="md:w-10 w-6  h-auto " />{" "}
-            <h1 className=" text-primary font-bold  text-xl  ">Electro hub</h1>
+          <div className="flex mb-5 mt-2 space-x-2 items-center ">
+            <img src={logo} alt="Logo" className="md:w-6 w-4  h-auto " />{" "}
+            <h1 className=" text-primary font-bold  text-lg  ">Electro hub</h1>
           </div>
         </Link>
         <div className="flex md:flex-col justify-between flex-row w-full ">
@@ -71,7 +71,7 @@ function Overview() {
                 activeTab.includes(item.name) || (item.name === "Users" && showUsersDropdown)
                   ? "bg-primary text-white "
                   : "  hover:text-primary hover:font-bold  "
-              } items-center flex-row md:items-start cursor-pointer flex-1 flex md:flex-col items md:justify-start justify-center md:p-4 p-3 md:my-2 md:rounded  text-sm font-medium  `}
+              } items-center flex-row md:items-start cursor-pointer flex-1 flex md:flex-col items md:justify-start justify-center md:p-4 p-3 md:my-1 md:rounded  text-sm font-medium  `}
               onClick={() => {
                 setActiveTab(item.name);
                 if (item.name === "Users") {

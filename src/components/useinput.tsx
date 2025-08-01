@@ -27,24 +27,27 @@ export default function CustomInput({
   icon,
   labelstyle, 
   classStyle,
+  
 }: CustomInputProps) {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
-
   return (
     <div className=" space-y-1">
-      {label && <label className={labelstyle}>{label}</label>}
+      {label && <label className={`${labelstyle} text-sm `}>{label}</label>}
 
       <div
-        className={`flex  items-center gap-2 ${variant==="bordered" &&  "border"} ${classStyle} focus:border-green-500 p-1 px-2  rounded-sm`}
+        className={`flex  items-center gap-2 ${
+          variant === "bordered" && "border"
+        } ${classStyle} focus:border-green-500 p-1 px-2  rounded-sm`}
       >
         <>{icon}</>
         <Input
           type={type === "password" ? (isVisible ? "text" : "password") : type}
           placeholder={placeholder}
           {...register(name)}
-          className={`  `}
+          className={` placeholder:text-xs text-xs `}
+          data-cy={ name }
         />
 
         {type === "password" ? (
@@ -63,8 +66,8 @@ export default function CustomInput({
         ) : null}
       </div>
       {errors[name] && (
-        <p className="text-red-500 text-xs mt-1">
-          {typeof errors[name]?.message === 'string' ? errors[name].message : "This field is required"}
+        <p className="text-red-500 text-xs mt-1" data-error={name}>
+          {typeof errors[name]?.message === "string" ? errors[name].message : "This field is required"}
         </p>
       )}
     </div>

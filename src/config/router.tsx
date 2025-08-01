@@ -10,8 +10,8 @@ import EditProfile from "../pages/editprofile";
 
 import { ReactElement } from "react";
 import { RouteObject } from "react-router-dom";
-
-const renderRoutes = (layout: ReactElement, routes: RouteObject[], user: any) => (
+import ScrollToTop from "@/utils/scrolltotop";
+const renderRoutes = (layout: ReactElement, routes: RouteObject[], user: any, isUser: boolean) => (
   <Routes>
     <Route element={layout}>
       {routes.map(({ path, element }) => (
@@ -19,21 +19,33 @@ const renderRoutes = (layout: ReactElement, routes: RouteObject[], user: any) =>
       ))}
     </Route>
     <Route path="*" element={<Page404 />} />
-   
-    <Route path="/dashboard" element={user?.role !== "admin" ? <Navigate to="/" replace={true} /> : <Dashboard />} />
-    <Route path="/checkout" element={user?.id ? <Checkout/> :<Navigate to="/auth/login" replace={true} />} />
-    <Route path="/my-account" element={user?.id ? <Profile/> :<Navigate to="/auth/login" replace={true} />} />
-    <Route path="/my-account/edit" element={user?.id ? <EditProfile/> :<Navigate to="/auth/login" replace={true} />} />
+
+    <Route
+      path="/dashboard"
+      element={isUser === false || user?.role !== "admin" ? <Navigate to="/" replace={true} /> : <Dashboard />}
+    />
+    <Route
+      path="/checkout"
+      element={isUser === false || user?.id ? <Checkout /> : <Navigate to="/auth/login" replace={true} />}
+    />
+    <Route
+      path="/my-account"
+      element={isUser === false || user?.id ? <Profile /> : <Navigate to="/auth/login" replace={true} />}
+    />
+    <Route
+      path="/my-account/edit"
+      element={isUser === false || user?.id ? <EditProfile /> : <Navigate to="/auth/login" replace={true} />}
+    />
   </Routes>
 );
 
-const RouterComponent = ({ user }:any) => {
+const RouterComponent = ({ user, isUser }: any) => {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
-        <Route path="auth/*" element={renderRoutes(<AuthLayout />, authRoutes, user)} />
-        <Route path="/*" element={renderRoutes(<Applayout />, inAppRoutes, user)} />
-       
+        <Route path="auth/*" element={renderRoutes(<AuthLayout />, authRoutes, user, isUser)} />
+        <Route path="/*" element={renderRoutes(<Applayout />, inAppRoutes, user, isUser)} />
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
 import { formatCurrency } from "../../../utils/formatter";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
-import { fetchMatricsEP } from "../../../services";  
+import { fetchMatricsEP, fetchOrdersPerDayEP, fetchProductsPerDayEP, fetchUsersPerDayEP } from "../../../services";
 import { useState } from "react";
 import { ArchiveBoxIcon, ShoppingBagIcon, UserIcon, WalletIcon } from "@heroicons/react/24/outline";
 import {
@@ -22,39 +22,16 @@ import {
   Radar,
   BarChart,
   Bar,
+  Area,
+  AreaChart,
+  ScatterChart,
+  Scatter,
 } from "recharts";
 
 export function DashboardTab() {
   const user = useSelector((state: any) => state.auth);
-  // utils/Data.js
-  const data = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    }, 
-  ];
- 
 
+  //matrics
   const {
     isPending,
     error,
@@ -64,9 +41,39 @@ export function DashboardTab() {
     queryFn: fetchMatricsEP,
     staleTime: 10 * 1000,
   });
-  // if (isPending) return "Loading...";
 
-  if (error) return "An error has occurred: " + error.message;
+  //getOrdersPerDay
+  const {
+    // isPending,
+    // error,
+    data: ordersPerDay,
+  } = useQuery({
+    queryKey: ["ordersPerDay"],
+    queryFn: fetchOrdersPerDayEP,
+    staleTime: 10 * 1000,
+  });
+
+  // users-per-day
+  const {
+    // isPending,
+    // error,
+    data: usersPerDay,
+  } = useQuery({
+    queryKey: ["usersPerDay"],
+    queryFn: fetchUsersPerDayEP,
+    staleTime: 10 * 1000,
+  });
+
+  //getProductsPerDay
+  const {
+    // isPending,
+    // error
+    data: productsParDay,
+  } = useQuery({
+    queryKey: ["productsParDay"],
+    queryFn: fetchProductsPerDayEP,
+    staleTime: 10 * 1000,
+  });
 
   return (
     <div className=" text-xs space-y-8">
@@ -112,66 +119,74 @@ export function DashboardTab() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-4 ">
-        <div className="  bg-[#ffffff]  col-span-2 p-6 border rounded-lg shadow ">
-          <h1 className="">Daily Sales</h1>
-          <div className=" w-full h-[400px]">
-            {/* <Line data={data} className="w-full" /> */}
-            <ResponsiveContainer>
-              <LineChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ddd" />
-                <XAxis dataKey="name" tick={{fill:"#did5db"}} tickLine={false} />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-              </LineChart>
-            </ResponsiveContainer>
+        {ordersPerDay && ordersPerDay.length > 0 && (
+          <div className="  bg-[#ffffff]  col-span-2 p-6 border rounded-lg shadow ">
+            <h1 className="">Daily Sales</h1>
+            <div className=" w-full h-[400px]">
+              <ResponsiveContainer>
+                <LineChart
+                  width={500}
+                  height={300}
+                  data={ordersPerDay}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ddd" />
+                  {/* <XAxis dataKey="date" tick={{ fill: "#did5db" }} tickLine={false} /> */}
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="totalAmount" stroke="#8884d8" activeDot={{ r: 8 }} unit="" />
+                  {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
-        <div className="bg-[#ffffff] p-6 rounded-lg border shadow">
-          <h1 className="">Top Products</h1>
-          <div className=" w-full h-[400px]">
-            <ResponsiveContainer>
-              <RadialBarChart cx="50%" cy="50%" innerRadius="40%" outerRadius="100%" barSize={15} data={data}>
-                <RadialBar  background dataKey="uv" />
-                </RadialBarChart>
-            </ResponsiveContainer>
+        )}
+
+        {productsParDay && productsParDay.length > 0 && (
+          <div className="bg-[#ffffff] p-6 rounded-lg border shadow col-span-2 md:col-span-1">
+            <h1 className="">Top Products</h1>
+            <div className=" w-full h-[400px]">
+              <ResponsiveContainer width="100%" height={400}>
+                <ScatterChart
+                  margin={{
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20,
+                  }}
+                >
+                  <CartesianGrid />
+                  <XAxis type="number" dataKey="date" name="date" unit="" />
+                  <YAxis type="number" dataKey="totalProducts" name="products" unit="" />
+                  <Legend />
+                  <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+                  <Scatter name="Products per day" data={productsParDay} fill="#8884d8" />
+                </ScatterChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
-        <div className="bg-[#ffffff] p-6 rounded-lg border shadow">
-          <h1 className="">Top Products</h1>
-          <div className=" w-full h-[400px]">
-            <ResponsiveContainer>
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="subject" />
-                <PolarRadiusAxis />
-                <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-              </RadarChart>
-            </ResponsiveContainer>
+        )}
+        {usersPerDay && usersPerDay.length > 0 && (
+          <div className="bg-[#ffffff]  col-span-2 md:col-span-3 p-6 border rounded-lg shadow ">
+            <h1 className="">Daily User</h1>
+            <div className=" w-full h-[400px]">
+              <ResponsiveContainer>
+                <BarChart width={5} height={40} data={usersPerDay}>
+                  <Bar dataKey="totalUsers" fill="#8884d8" />
+                  {/* <XAxis dataKey="date" tick={{ fill: "#did5db" }} tickLine={false} /> */}
+                  <YAxis />
+                  <Legend />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
-        <div className="bg-[#ffffff]  col-span-2 p-6 border rounded-lg shadow ">
-          <h1 className="">Daily User</h1>
-          <div className=" w-full h-[400px]">
-            <ResponsiveContainer >
-              <BarChart width={5} height={40} data={data}>
-                <Bar dataKey="uv" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
