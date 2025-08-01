@@ -80,14 +80,14 @@ export default function TopSale({ products, userId }: { products: ProductItemPro
                       />
                     </CardHeader>
                     <CardContent className="text-sm p-1 px-2 text-left flex flex-col gap-1 items-start ">
-                      <b
+                      <p
                         className=" cursor-pointer line-clamp-3 "
                         onClick={() => {
                           navigate(`/product/${item?.id}`);
                         }}
                       >
                         {item?.name}
-                      </b>
+                      </p>
                       {/* <div className="flex items-center gap-2">
                         <StarIcon className={item?.star ? "size-4 fill-[gold] " : "size-4"} color="gold" />
                         <b>•</b>
