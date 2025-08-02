@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export default function Hero({ data }) {
   const navigate = useNavigate();
   return (
-    <div className="bg-gray-200 pb-10 md:pb-0 text-default-800  shadow w-full  ">
+    <div className="bg pb-10 md:pb-0 text-default-800  w-full  bg-gradient-to-b from-gray-50 to-primary/5 ">
       <div className="mx-[6%] md:mr-0 md:ml-[14%] relative z-0 items-center md:flex gap-6 ">
         <div className=" md:w-[50%] w-[70%] md:mx-0 pt-20  z-100  ">
           <h1 className="md:text-4xl text-xl font-black z-100 ">
