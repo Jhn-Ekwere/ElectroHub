@@ -32,11 +32,10 @@ export default function App() {
   return (
     <div className="bg-[#fbf9fc]">
       <ToastContainer position="top-left" />
-      {isPending ? (
+      {/* { isPending&&(
         <div className="flex items-center justify-center h-screen">Loading...</div>
-      ) : (
-        <RouterComponent user={user} isUser={isUser} />
-      )}
+      ) } */}
+      <RouterComponent user={user} isUser={isUser} />
     </div>
   );
 }
