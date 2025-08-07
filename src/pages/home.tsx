@@ -46,27 +46,27 @@ export default function Home() {
       <Hero data={data} />
 
       <div className=" md:px-[10%] px-[10px] p-10 pt-0 text-xs md:text-sm bg-primary/5 text-default-600  ">
-        <div className="container grid grid-cols-3 md:grid-cols-4  border  gap-5">
+        <div className="container grid grid-cols-2 md:grid-cols-4  border  md:gap-5 gap-3">
           <div className="bg-white space-y-2 p-4 ">
             <h2 className="text-xs font-semibold ">Integrated Circuits (ICs) </h2>
             <div className={`grid grid-cols-1 gap-5`}>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Microcontrollers} alt={`Microcontrollers `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Microcontrollers</p>
               </div>
               <div className={`grid grid-cols-2 gap-2`}>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Op} alt={`Op `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">Op-Amps</p>
                 </div>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Arduino} alt={`Arduino `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">Arduino Boards</p>
+                  <p className="text-[11px] ">Arduino </p>
                 </div>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 Explore ICs
               </a>
             </p>
@@ -74,25 +74,25 @@ export default function Home() {
           <div className="bg-white space-y-2 p-4 ">
             <h2 className="text-xs font-semibold ">Shop for your favorite components </h2>
             <div className={`grid grid-cols-2 gap-5`}>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Resistors} alt={`Resistors `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Resistors</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Capacitors} alt={`Capacitors `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Capacitors</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Diodes} alt={`Diodes `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Diodes</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Transistors} alt={`Transistors `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Transistors</p>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 See more components
               </a>
             </p>
@@ -101,23 +101,23 @@ export default function Home() {
             <h2 className="text-xs font-semibold ">Development Boards & Power Modules </h2>
             <div className={`grid grid-cols-1 gap-5`}>
               <div className={`grid grid-cols-2 gap-2`}>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Battery} alt={`Battery `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">Battery Packs</p>
                 </div>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={DC} alt={`DC `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">DC Power Modules</p>
                 </div>
               </div>
 
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Raspberry} alt={`Raspberry `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Raspberry Pi</p>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 View all modules
               </a>
             </p>
@@ -131,7 +131,7 @@ export default function Home() {
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 Browse tools
               </a>
             </p>
@@ -139,27 +139,27 @@ export default function Home() {
           <div className="bg-white space-y-2 p-4 ">
             <h2 className="text-xs font-semibold ">Integrated Circuits (ICs) </h2>
             <div className={`grid grid-cols-1 gap-5`}>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Microcontrollers} alt={`Microcontrollers `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Microcontrollers</p>
               </div>
               <div className={`grid grid-cols-3 gap-2`}>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Op} alt={`Op `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">Op-Amps</p>
                 </div>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Arduino} alt={`Arduino `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">Arduino Boards</p>
+                  <p className="text-[11px] ">Arduino </p>
                 </div>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Arduino} alt={`Arduino `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">Arduino Boards</p>
+                  <p className="text-[11px] ">Arduino </p>
                 </div>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 Explore ICs
               </a>
             </p>
@@ -173,7 +173,7 @@ export default function Home() {
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 See more components
               </a>
             </p>
@@ -182,23 +182,23 @@ export default function Home() {
             <h2 className="text-xs font-semibold ">Development Boards & Power Modules </h2>
             <div className={`grid grid-cols-1 gap-5`}>
               <div className={`grid grid-cols-2 gap-2`}>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Battery} alt={`Battery `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">Battery Packs</p>
                 </div>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={DC} alt={`DC `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">DC Power Modules</p>
                 </div>
               </div>
 
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Raspberry} alt={`Raspberry `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Raspberry Pi</p>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 View all modules
               </a>
             </p>
@@ -206,25 +206,25 @@ export default function Home() {
           <div className="bg-white space-y-2 hidden md:block p-4 ">
             <h2 className="text-xs font-semibold ">Measuring Instruments </h2>
             <div className={`grid grid-cols-2 gap-5`}>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Multimeters} alt={`Multimeters `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Multimeters</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Oscilloscope} alt={`Oscilloscopes `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Oscilloscopes</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Calipers} alt={`Calipers `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Calipers</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Thermometers} alt={`Thermometers `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Thermometers</p>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 Browse tools
               </a>
             </p>
@@ -236,54 +236,55 @@ export default function Home() {
       {data?.length > 0 && <FlashSale products={data} userId={user.id} />}
       <Category data={data} />
       {data?.length > 0 && <NewArival products={data} userId={user.id} />}
-      <div className=" md:px-[10%] px-[10px] p-10 pt-0 text-xs md:text-sm bg-primary/5 text-default-600  ">
-        <div className="container grid grid-cols-3 md:grid-cols-4  border  gap-5">
+      <div className=" md:px-[10%] px-[10px] p-10  text-xs md:text-sm bg-primary/5 text-default-600  ">
+        <div className="container grid grid-cols-2 md:grid-cols-4  border   md:gap-5 gap-3">
           <div className="bg-white space-y-2 p-4 ">
             <h2 className="text-xs font-semibold ">Integrated Circuits (ICs) </h2>
             <div className={`grid grid-cols-1 gap-5`}>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Microcontrollers} alt={`Microcontrollers `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Microcontrollers</p>
               </div>
               <div className={`grid grid-cols-2 gap-2`}>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Op} alt={`Op `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">Op-Amps</p>
                 </div>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Arduino} alt={`Arduino `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">Arduino Boards</p>
+                  <p className="text-[11px] ">Arduino </p>
                 </div>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 Explore ICs
               </a>
             </p>
           </div>
+
           <div className="bg-white space-y-2 p-4 ">
             <h2 className="text-xs font-semibold ">Shop for your favorite components </h2>
             <div className={`grid grid-cols-2 gap-5`}>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Resistors} alt={`Resistors `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Resistors</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Capacitors} alt={`Capacitors `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Capacitors</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Diodes} alt={`Diodes `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Diodes</p>
               </div>
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Transistors} alt={`Transistors `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Transistors</p>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 See more components
               </a>
             </p>
@@ -292,28 +293,28 @@ export default function Home() {
             <h2 className="text-xs font-semibold ">Development Boards & Power Modules </h2>
             <div className={`grid grid-cols-1 gap-5`}>
               <div className={`grid grid-cols-2 gap-2`}>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={Battery} alt={`Battery `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">Battery Packs</p>
                 </div>
-                <div className=" w-full md:h-20 h-10 ">
+                <div className=" w-full md:h-20 h-16 ">
                   <img src={DC} alt={`DC `} className="w-full h-full object-cover" />
                   <p className="text-[11px] ">DC Power Modules</p>
                 </div>
               </div>
 
-              <div className=" w-full md:h-20 h-10 ">
+              <div className=" w-full md:h-20 h-16 ">
                 <img src={Raspberry} alt={`Raspberry `} className="w-full h-full object-cover" />
                 <p className="text-[11px] ">Raspberry Pi</p>
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 View all modules
               </a>
             </p>
           </div>
-          <div className="bg-white space-y-2 hidden md:block p-4 ">
+          <div className="bg-white space-y-2   md:block p-4 ">
             <h2 className="text-xs font-semibold ">Measuring Instruments </h2>
             <div className={`grid grid-cols-1 gap-5`}>
               <div className=" w-full h-48 ">
@@ -322,100 +323,7 @@ export default function Home() {
               </div>
             </div>
             <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
-                Browse tools
-              </a>
-            </p>
-          </div>
-          <div className="bg-white space-y-2 p-4 ">
-            <h2 className="text-xs font-semibold ">Integrated Circuits (ICs) </h2>
-            <div className={`grid grid-cols-1 gap-5`}>
-              <div className=" w-full md:h-20 h-10 ">
-                <img src={Microcontrollers} alt={`Microcontrollers `} className="w-full h-full object-cover" />
-                <p className="text-[11px] ">Microcontrollers</p>
-              </div>
-              <div className={`grid grid-cols-3 gap-2`}>
-                <div className=" w-full md:h-20 h-10 ">
-                  <img src={Op} alt={`Op `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">Op-Amps</p>
-                </div>
-                <div className=" w-full md:h-20 h-10 ">
-                  <img src={Arduino} alt={`Arduino `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">Arduino Boards</p>
-                </div>
-                <div className=" w-full md:h-20 h-10 ">
-                  <img src={Arduino} alt={`Arduino `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">Arduino Boards</p>
-                </div>
-              </div>
-            </div>
-            <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
-                Explore ICs
-              </a>
-            </p>
-          </div>
-          <div className="bg-white space-y-2 p-4 ">
-            <h2 className="text-xs font-semibold ">Shop for your favorite components </h2>
-            <div className={`grid grid-cols-1 gap-5`}>
-              <div className=" w-full h-48 ">
-                <img src={Capacitors} alt={`Capacitors `} className="w-full h-full object-cover" />
-                <p className="text-[11px] ">Capacitors</p>
-              </div>
-            </div>
-            <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
-                See more components
-              </a>
-            </p>
-          </div>
-          <div className="bg-white space-y-2 p-4 ">
-            <h2 className="text-xs font-semibold ">Development Boards & Power Modules </h2>
-            <div className={`grid grid-cols-1 gap-5`}>
-              <div className={`grid grid-cols-2 gap-2`}>
-                <div className=" w-full md:h-20 h-10 ">
-                  <img src={Battery} alt={`Battery `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">Battery Packs</p>
-                </div>
-                <div className=" w-full md:h-20 h-10 ">
-                  <img src={DC} alt={`DC `} className="w-full h-full object-cover" />
-                  <p className="text-[11px] ">DC Power Modules</p>
-                </div>
-              </div>
-
-              <div className=" w-full md:h-20 h-10 ">
-                <img src={Raspberry} alt={`Raspberry `} className="w-full h-full object-cover" />
-                <p className="text-[11px] ">Raspberry Pi</p>
-              </div>
-            </div>
-            <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
-                View all modules
-              </a>
-            </p>
-          </div>
-          <div className="bg-white space-y-2 hidden md:block p-4 ">
-            <h2 className="text-xs font-semibold ">Measuring Instruments </h2>
-            <div className={`grid grid-cols-2 gap-5`}>
-              <div className=" w-full md:h-20 h-10 ">
-                <img src={Multimeters} alt={`Multimeters `} className="w-full h-full object-cover" />
-                <p className="text-[11px] ">Multimeters</p>
-              </div>
-              <div className=" w-full md:h-20 h-10 ">
-                <img src={Oscilloscope} alt={`Oscilloscopes `} className="w-full h-full object-cover" />
-                <p className="text-[11px] ">Oscilloscopes</p>
-              </div>
-              <div className=" w-full md:h-20 h-10 ">
-                <img src={Calipers} alt={`Calipers `} className="w-full h-full object-cover" />
-                <p className="text-[11px] ">Calipers</p>
-              </div>
-              <div className=" w-full md:h-20 h-10 ">
-                <img src={Thermometers} alt={`Thermometers `} className="w-full h-full object-cover" />
-                <p className="text-[11px] ">Thermometers</p>
-              </div>
-            </div>
-            <p className="pt-2  ">
-              <a href="#" className="underline  text-[11px]">
+              <a href="#" className=" hover:underline  text-[11px] text-accent ">
                 Browse tools
               </a>
             </p>
