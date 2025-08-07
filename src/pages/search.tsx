@@ -71,8 +71,7 @@ export default function SearchResult() {
     <div className=" flex flex-col flex-grow ">
       <div className="flex md:flex-row flex-grow flex-col  w-full ">
         {/* Filter Options */}
-        <div className="md:w-1/8  md:p-6 p-2 px-4 md:text-medium text-[9px] md:justify-start justify-center  border-b pb-4 bg-gray-200 shadow flex flex-row md:flex-col gap-2 border-r border-gray-300  pt-20 ">
-          <h3 className="md:text-xl text-[11px] font-semibold ">Filter </h3>
+        <div className="md:w-1/8  md:p-6 p-2 px-4 md:text-medium text-[9px] md:justify-start justify-center  border-b pb-4 bg-gray-20 shadow flex flex-row md:flex-col gap-2 border-r border-gray-300  md:pt-10 items-center ">
           {/* Add your filter options here */}
           <div className="border-r border-default-400 flex-center  w-full">
             <Select>
@@ -118,7 +117,7 @@ export default function SearchResult() {
           <div className="flex flex-wrap  gap-4 ">
             {currentItems.length > 0 ? (
               currentItems.map((item: Product) => (
-                <div key={item.id} className="md:w-[13em] w-[10em] flex flex-col border ">
+                <div key={item.id} className="md:w-[13em] w-[11em] flex flex-col border ">
                   <div className="overflow-visible  bg-white/80 ">
                     <div className="absolute right-4 top-2 p-1 rounded-full  items-center  bg-white/80  ">
                       <HeartIcon

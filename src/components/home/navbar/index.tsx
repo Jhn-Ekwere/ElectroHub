@@ -173,7 +173,7 @@ export default function Nav() {
             </NavbarBrand>
           </Link>
         </NavbarContent>
-        <NavbarContent justify="center" className="w-[30em] hidden md:flex ">
+        {/* <NavbarContent justify="center" className="w-[30em] hidden md:flex ">
           <div className="border flex gap-2 items-center rounded pl-1 w-full ">
             <MagnifyingGlassIcon className=" size-5  " />
             <Input
@@ -185,7 +185,7 @@ export default function Nav() {
              rounded-none w-full "
             />
           </div>
-        </NavbarContent>
+        </NavbarContent> */}
 
         <NavbarContent as="div" className="items-center  noFlexGrow w-fit md:gap-3 gap-1 " justify="end">
           {!isSearchOpen ? (
@@ -314,27 +314,7 @@ export default function Nav() {
       </Navbar>
 
       <div className=" shadow border-b border-default-300 bg-white/80  text-default-600 md:px-[14%] px-[6%] py-1 flex  items-center justify-between ">
-        <div className="flex  items-center text-sm md:gap-20 gap-4 ">
-          <div className="border-r border-default-400 flex-center md:pr-10">
-            <AdjustmentsHorizontalIcon className="size-4" />
-            <Select>
-              <SelectTrigger className="w-[10em]">
-                <SelectValue placeholder="Select a Categories" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {Array.isArray(categories) &&
-                    categories?.map((item: CategoryProps) => (
-                      <SelectItem key={item?.id} value={item?.name}>
-                        {item?.name}
-                      </SelectItem>
-                    ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="flex mx-auto gap-6 ">
+        <div className="flex gap-6 text-sm ">
           <Link
             to="/about-us"
             className={` ${location === "/about-us" && " text-accent"} cursor-pointer hidden md:block `}
@@ -348,14 +328,24 @@ export default function Nav() {
             Contact
           </Link>
         </div>
-
+        <div className="border max-w-[450px] hidden md:flex gap-2 items-center rounded pl-1 w-full ">
+          <MagnifyingGlassIcon className=" size-5  " />
+          <Input
+            type="email"
+            placeholder="Search products"
+            onKeyDown={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="
+             rounded-none w-full "
+          />
+        </div>
         <div className="md:flex gap-2 cursor-default">
           <div className="md:w-[6em] w-[3em] md:relative absolute md:right-0 right-6 ">
             <img src={truck} alt="" className="w-full h-full " />
           </div>
           <div className="w-fit md:mr-0 mr-6 ">
             <p className="md:text-sm text-xs text-primary  ">Free Delivery</p>
-            <p className="text-xs flex flex-col md:flex-row ">
+            <p className="text-xs flex gap-1 md:flex-row ">
               For all orders above <span className="">₦100,000</span>
             </p>
           </div>
