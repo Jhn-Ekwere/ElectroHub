@@ -10,7 +10,7 @@ import EditProfile from "../pages/editprofile";
 
 import { ReactElement } from "react";
 import { RouteObject } from "react-router-dom";
-import ScrollToTop from "@/utils/scrolltotop";
+import ScrollToTop from "../utils/scrolltotop";
 const renderRoutes = (layout: ReactElement, routes: RouteObject[], user: any, isUser: boolean) => (
   <Routes>
     <Route element={layout}>
